@@ -55,13 +55,13 @@ class ImageParser extends ParserBase
 	public static function supportsData(data:Dynamic):Bool
 	{
 		//shortcut if asset is IFlexAsset
-		if (Std.is(data, Bitmap))
+		if (data is Bitmap)
 			return true;
 		
-		if (Std.is(data, BitmapData))
+		if (data is BitmapData)
 			return true;
 		
-		if (!(Std.is(data, ByteArrayData)))
+		if (!(data is ByteArrayData))
 			return false;
 		
 		var ba:ByteArray = cast(data, ByteArray);
@@ -94,13 +94,13 @@ class ImageParser extends ParserBase
 	private override function proceedParsing():Bool
 	{
 		var asset:Texture2DBase;
-		if (Std.is(_data, Bitmap)) {
+		if (_data is Bitmap) {
 			asset = new BitmapTexture(cast(_data, Bitmap).bitmapData);
 			finalizeAsset(asset, _fileName);
 			return ParserBase.PARSING_DONE;
 		}
 		
-		if (Std.is(_data, BitmapData)) {
+		if (_data is BitmapData) {
 			asset = new BitmapTexture(cast(_data, BitmapData));
 			finalizeAsset(asset, _fileName);
 			return ParserBase.PARSING_DONE;
