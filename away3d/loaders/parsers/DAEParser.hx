@@ -617,11 +617,12 @@ class DAEParser extends ParserBase
 		//var useGPU : Bool = _configFlags & CONFIG_USE_GPU ? true : false;
 		//var animation : SkeletonAnimation = new SkeletonAnimation(skeleton, skin.maxBones, useGPU);
 		var animated:Bool = isAnimatedSkeleton(skeleton);
-		var duration:Float = _animationInfo.numFrames == 0 ? 1.0 : _animationInfo.maxTime - _animationInfo.minTime;
+		// Use maxTime, the total duration should not be affected by the minimum time.
+		var duration:Float = _animationInfo.numFrames == 0 ? 1.0 : _animationInfo.maxTime;
 		var numFrames:Int = Std.int(Math.max(_animationInfo.numFrames, (animated ? 50 : 2)));
 		var frameDuration:Float = duration / numFrames;
-		
-		var t:Float = 0;
+		// Use minTime, avoid getting uninitialized bone poses at the initial frame.
+		var t:Float = _animationInfo.minTime;
 		var clip:SkeletonClipNode = new SkeletonClipNode();
 		//mesh.geometry.animation = animation;
 		var skeletonPose:SkeletonPose = null;
@@ -638,7 +639,12 @@ class DAEParser extends ParserBase
 				if (node == null)
 					node = _root.findNodeBySid(skin.joints[j]);
 				pose = new JointPose();
-				matrix = (matrix != null ? node.getAnimatedMatrix(t) : node.matrix);
+				
+				// Fix matrix
+				matrix = node.getAnimatedMatrix(t);
+				if(matrix == null)
+					matrix = node.matrix;
+
 				pose.name = skin.joints[j];
 				pose.orientation.fromMatrix(matrix);
 				pose.translation.copyFrom(matrix.position);
@@ -653,7 +659,11 @@ class DAEParser extends ParserBase
 			}
 			
 			t += frameDuration;
+			if(t >= _animationInfo.maxTime)
+				t = _animationInfo.maxTime;
+			
 			clip.addFrame(skeletonPose, Std.int(frameDuration * 1000));
+
 		}
 		
 		finalizeAsset(clip);
@@ -828,7 +838,7 @@ class DAEParser extends ParserBase
 		var shininess:Float = effect.shader.props.hasField("shininess") ? Std.parseFloat(effect.shader.props.shininess) : 10;
 		var transparency:Float = effect.shader.props.hasField("transparency") ? Std.parseFloat(effect.shader.props.transparency) : 1;
 		
-		if (diffuse != null && diffuse.texture != null && effect.surface != null) {
+		if (diffuse != null && diffuse.texture != null && effect.surface != null && _libImages != null) {
 			var image:DAEImage = _libImages[effect.surface.init_from];
 			
 			if (image.resource != null && isBitmapDataValid(cast(image.resource, BitmapTexture).bitmapData)) {
@@ -1537,7 +1547,7 @@ class DAEGeometry extends DAEElement
 	{
 		super.deserialize(element);
 		traverseChildren(element);
-		meshName = element.att.resolve("name");
+		meshName = element.att.hasField("name") ? element.att.resolve("name") : element.att.resolve("id");
 	}
 	
 	override private function traverseChildHandler(child:Access, nodeName:String):Void
@@ -2013,7 +2023,6 @@ class DAETransform extends DAEElement
 	private function get_matrix():Matrix3D
 	{
 		var matrix:Matrix3D = new Matrix3D();
-		
 		switch (this.type) {
 			case "matrix":
 				matrix = new Matrix3D(this.data);
@@ -2026,7 +2035,6 @@ class DAETransform extends DAEElement
 				var axis:Vector3D = new Vector3D(this.data[0], this.data[1], this.data[2]);
 				matrix.appendRotation(this.data[3], axis);
 		}
-		
 		return matrix;
 	}
 }
@@ -2138,7 +2146,7 @@ class DAENode extends DAEElement
 		for (i in 0...this.channels.length) {
 			channel = this.channels[i];
 			minTime = Math.min(minTime, channel.sampler.minTime);
-			minTime = Math.max(maxTime, channel.sampler.maxTime);
+			maxTime = Math.max(maxTime, channel.sampler.maxTime);
 			channelsBySID.set(channel.targetSid, channel);
 		}
 		
@@ -2754,6 +2762,8 @@ class DAEAnimation extends DAEElement
 	public function new(element:Access = null)
 	{
 		super(element);
+		if (this.id == "")
+			this.id = element.node.channel.att.resolve("source");
 	}
 	
 	override public function deserialize(element:Access):Void
