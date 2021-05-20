@@ -30,7 +30,7 @@ class Serialize
 	
 	public static function serializeObjectContainer(objectContainer3D:ObjectContainer3D, serializer:SerializerBase):Void
 	{
-		if (Std.is(objectContainer3D, Mesh))
+		if (objectContainer3D is Mesh)
 			serializeMesh(cast(objectContainer3D, Mesh), serializer); // do not indent any extra for first level here
 		else
 			serializeObjectContainerInternal(objectContainer3D, serializer, true /* serializeChildrenAndEnd */);
@@ -82,7 +82,7 @@ class Serialize
 	{
 		serializer.beginObject(classNameFromInstance(material), material.name);
 		
-		if (Std.is(material.lightPicker, StaticLightPicker))
+		if (material.lightPicker is StaticLightPicker)
 			serializer.writeString("lights", Std.string(cast(material.lightPicker, StaticLightPicker).lights));
 		serializer.writeBoolean("mipmap", material.mipmap);
 		serializer.writeBoolean("smooth", material.smooth);

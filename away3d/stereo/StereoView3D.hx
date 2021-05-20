@@ -49,7 +49,7 @@ class StereoView3D extends View3D
 		if (value == _stereoCam)
 			return value;
 		
-		if (Std.is(value, StereoCamera3D))
+		if (value is StereoCamera3D)
 			_stereoCam = cast(value, StereoCamera3D);
 		else
 			throw new Error("StereoView3D must be used with StereoCamera3D");

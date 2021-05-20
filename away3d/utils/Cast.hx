@@ -23,10 +23,10 @@ class Cast
 	
 	public static function string(data:Dynamic):String
 	{
-		if (Std.is(data, Class))
+		if (data is Class)
 			data = Type.createInstance(data, []);
 		
-		if (Std.is(data, String))
+		if (data is String)
 			return data;
 		
 		return Std.string(data);
@@ -34,13 +34,13 @@ class Cast
 	
 	public static function byteArray(data:Dynamic):ByteArray
 	{
-		if (Std.is(data, Class))
+		if (data is Class)
 			data = Type.createInstance(data, []);
 		
-		if (Std.is(data, ByteArrayData))
+		if (data is ByteArrayData)
 			return data;
 		
-		if (Std.is(data, Bytes))
+		if (data is Bytes)
 			return cast(data, ByteArray);
 		
 		return null;
@@ -49,10 +49,10 @@ class Cast
 	/*
 	public static function xml(data:Dynamic):XML
 	{
-		if (Std.is(data, Class))
+		if (data is Class)
 			data = Type.createInstance(data, []);
 		
-		if (Std.is(data, XML))
+		if (data is XML)
 			return data;
 		
 		return cast(data, XML);
@@ -72,10 +72,10 @@ class Cast
 	
 	public static function tryColor(data:Dynamic):Int
 	{
-		if (Std.is(data, Int))
+		if (data is Int)
 			return data;
 		
-		if (Std.is(data, String)) {
+		if (data is String) {
 			if (data == "random")
 				return Std.int(Math.random() * 0x1000000);
 			
@@ -272,10 +272,10 @@ class Cast
 		if (data == null)
 			return null;
 		
-		if (Std.is(data, String))
+		if (data is String)
 			data = Assets.getBitmapData(data);
 		
-		if (Std.is(data, Class)) {
+		if (data is Class) {
 			try {
 				data = Type.createInstance(data, []);
 			} catch (bitmapError:Dynamic) {
@@ -283,15 +283,15 @@ class Cast
 			}
 		}
 		
-		if (Std.is(data, BitmapData))
+		if (data is BitmapData)
 			return data;
 		
-		if (Std.is(data, Bitmap)) {
+		if (data is Bitmap) {
 			if (cast(data, Bitmap).bitmapData != null) // if (data is BitmapAsset)
 				return (cast(data, Bitmap)).bitmapData;
 		}
 		
-		if (Std.is(data, DisplayObject)) {
+		if (data is DisplayObject) {
 			var ds:DisplayObject = cast(data, DisplayObject);
 			var bmd:BitmapData = new BitmapData(Std.int(ds.width), Std.int(ds.height), true, 0x00FFFF);
 			var mat:Matrix = ds.transform.matrix.clone();
@@ -309,10 +309,10 @@ class Cast
 		if (data == null)
 			return null;
 		
-		if (Std.is(data, String))
+		if (data is String)
 			data = Assets.getBitmapData(data);
 		
-		if (Std.is(data, Class)) {
+		if (data is Class) {
 			try {
 				data = Type.createInstance(data, []);
 			} catch (materialError:Dynamic) {
@@ -320,7 +320,7 @@ class Cast
 			}
 		}
 		
-		if (Std.is(data, BitmapTexture))
+		if (data is BitmapTexture)
 			return data;
 		
 		try {
