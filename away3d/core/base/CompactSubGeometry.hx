@@ -1,6 +1,6 @@
 package away3d.core.base;
 
-
+import away3d.core.base.data.VertexDefinition;
 import away3d.core.managers.Stage3DProxy;
 
 import openfl.display3D.Context3D;
@@ -12,6 +12,8 @@ import openfl.Vector;
 
 class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 {
+	public final definition:VertexDefinition;
+	
 	public var numVertices(get, never):Int;
 	public var secondaryUVStride(get, never):Int;
 	public var secondaryUVOffset(get, never):Int;
@@ -27,11 +29,12 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 	private var _isolatedVertexPositionData:Vector<Float>;
 	private var _isolatedVertexPositionDataDirty:Bool;
 	
-	public function new()
+	public function new(?definition:VertexDefinition)
 	{
 		super();
 		_autoDeriveVertexNormals = false;
 		_autoDeriveVertexTangents = false;
+		this.definition = definition != null ? definition : VertexDefinition.defaultVertexDefinition;
 	}
 	
 	private function get_numVertices():Int
@@ -59,7 +62,7 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 		_isolatedVertexPositionDataDirty = true;
 		
 		_vertexData = data;
-		var numVertices:Int = Std.int(_vertexData.length/13);
+		var numVertices:Int = Std.int(_vertexData.length/definition.length);
 		if (numVertices != _numVertices)
 			disposeVertexBuffers(_vertexBuffer);
 		_numVertices = numVertices;
@@ -74,6 +77,12 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 	
 	public function activateVertexBuffer(index:Int, stage3DProxy:Stage3DProxy):Void
 	{
+		final attribute:AttributeDefinition = definition.get("position");
+		if (attribute == null)
+		{
+			return;
+		}
+		
 		var contextIndex:Int = stage3DProxy._stage3DIndex;
 		var context:Context3D = stage3DProxy._context3D;
 		
@@ -85,11 +94,17 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 		if (_activeDataInvalid)
 			uploadData(contextIndex);
 		
-		context.setVertexBufferAt(index, _activeBuffer, 0, Context3DVertexBufferFormat.FLOAT_3);
+		context.setVertexBufferAt(index, _activeBuffer, attribute.offset, attribute.vertexBufferFormat);
 	}
 	
 	public function activateUVBuffer(index:Int, stage3DProxy:Stage3DProxy):Void
 	{
+		final attribute:AttributeDefinition = definition.get("UV");
+		if (attribute == null)
+		{
+			return;
+		}
+		
 		var contextIndex:Int = stage3DProxy._stage3DIndex;
 		var context:Context3D = stage3DProxy._context3D;
 		
@@ -106,11 +121,17 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 		if (_activeDataInvalid)
 			uploadData(contextIndex);
 		
-		context.setVertexBufferAt(index, _activeBuffer, 9, Context3DVertexBufferFormat.FLOAT_2);
+		context.setVertexBufferAt(index, _activeBuffer, attribute.offset, attribute.vertexBufferFormat);
 	}
 	
 	public function activateSecondaryUVBuffer(index:Int, stage3DProxy:Stage3DProxy):Void
 	{
+		final attribute:AttributeDefinition = definition.get("secondaryUV");
+		if (attribute == null)
+		{
+			return;
+		}
+		
 		var contextIndex:Int = stage3DProxy._stage3DIndex;
 		var context:Context3D = stage3DProxy._context3D;
 		
@@ -122,7 +143,7 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 		if (_activeDataInvalid)
 			uploadData(contextIndex);
 		
-		context.setVertexBufferAt(index, _activeBuffer, 11, Context3DVertexBufferFormat.FLOAT_2);
+		context.setVertexBufferAt(index, _activeBuffer, attribute.offset, attribute.vertexBufferFormat);
 	}
 	
 	private function uploadData(contextIndex:Int):Void
@@ -133,6 +154,12 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 	
 	public function activateVertexNormalBuffer(index:Int, stage3DProxy:Stage3DProxy):Void
 	{
+		final attribute:AttributeDefinition = definition.get("normal");
+		if (attribute == null)
+		{
+			return;
+		}
+		
 		var contextIndex:Int = stage3DProxy._stage3DIndex;
 		var context:Context3D = stage3DProxy._context3D;
 		
@@ -144,11 +171,17 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 		if (_activeDataInvalid)
 			uploadData(contextIndex);
 		
-		context.setVertexBufferAt(index, _activeBuffer, 3, Context3DVertexBufferFormat.FLOAT_3);
+		context.setVertexBufferAt(index, _activeBuffer, attribute.offset, attribute.vertexBufferFormat);
 	}
 	
 	public function activateVertexTangentBuffer(index:Int, stage3DProxy:Stage3DProxy):Void
 	{
+		final attribute:AttributeDefinition = definition.get("tangent");
+		if (attribute == null)
+		{
+			return;
+		}
+		
 		var contextIndex:Int = stage3DProxy._stage3DIndex;
 		var context:Context3D = stage3DProxy._context3D;
 		
@@ -160,12 +193,12 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 		if (_activeDataInvalid)
 			uploadData(contextIndex);
 		
-		context.setVertexBufferAt(index, _activeBuffer, 6, Context3DVertexBufferFormat.FLOAT_3);
+		context.setVertexBufferAt(index, _activeBuffer, attribute.offset, attribute.vertexBufferFormat);
 	}
 	
 	private function createBuffer(contextIndex:Int, context:Context3D, stage3DProxy:Stage3DProxy):Void
 	{
-		_vertexBuffer[contextIndex] = _activeBuffer = stage3DProxy.createVertexBuffer(_numVertices, 13);
+		_vertexBuffer[contextIndex] = _activeBuffer = stage3DProxy.createVertexBuffer(_numVertices, definition.length);
 		_bufferContext[contextIndex] = _activeContext = context;
 		_vertexDataInvalid[contextIndex] = _activeDataInvalid = true;
 	}
@@ -257,52 +290,52 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 	
 	override private function get_vertexStride():Int
 	{
-		return 13;
+		return definition.length;
 	}
 	
 	override private function get_vertexNormalStride():Int
 	{
-		return 13;
+		return definition.length;
 	}
 	
 	override private function get_vertexTangentStride():Int
 	{
-		return 13;
+		return definition.length;
 	}
 	
 	override private function get_UVStride():Int
 	{
-		return 13;
+		return definition.length;
 	}
 	
 	private function get_secondaryUVStride():Int
 	{
-		return 13;
+		return definition.length;
 	}
 	
 	override private function get_vertexOffset():Int
 	{
-		return 0;
+		return definition.get("position")?.offset ?? 0;
 	}
 	
 	override private function get_vertexNormalOffset():Int
 	{
-		return 3;
+		return definition.get("normal")?.offset ?? 0;
 	}
 	
 	override private function get_vertexTangentOffset():Int
 	{
-		return 6;
+		return definition.get("tangent")?.offset ?? 0;
 	}
 	
 	override private function get_UVOffset():Int
 	{
-		return 9;
+		return definition.get("UV")?.offset ?? 0;
 	}
 	
 	private function get_secondaryUVOffset():Int
 	{
-		return 11;
+		return definition.get("secondaryUV")?.offset ?? 0;
 	}
 	
 	override public function dispose():Void
@@ -327,15 +360,15 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 	public function cloneWithSeperateBuffers():SubGeometry
 	{
 		var clone:SubGeometry = new SubGeometry();
-		clone.updateVertexData(_isolatedVertexPositionData != null? _isolatedVertexPositionData : _isolatedVertexPositionData = stripBuffer(0, 3));
+		clone.updateVertexData(get_vertexPositionData());
 		clone.autoDeriveVertexNormals = _autoDeriveVertexNormals;
 		clone.autoDeriveVertexTangents = _autoDeriveVertexTangents;
 		if (!_autoDeriveVertexNormals)
-			clone.updateVertexNormalData(stripBuffer(3, 3));
+			clone.updateVertexNormalData(isolateAttribute("normal"));
 		if (!_autoDeriveVertexTangents)
-			clone.updateVertexTangentData(stripBuffer(6, 3));
-		clone.updateUVData(stripBuffer(9, 2));
-		clone.updateSecondaryUVData(stripBuffer(11, 2));
+			clone.updateVertexTangentData(isolateAttribute("tangent"));
+		clone.updateUVData(isolateAttribute("UV"));
+		clone.updateSecondaryUVData(isolateAttribute("secondaryUV"));
 		clone.updateIndexData(indexData.concat());
 		return clone;
 	}
@@ -343,26 +376,38 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 	override private function get_vertexPositionData():Vector<Float>
 	{
 		if (_isolatedVertexPositionDataDirty || _isolatedVertexPositionData == null) {
-			_isolatedVertexPositionData = stripBuffer(0, 3);
+			_isolatedVertexPositionData = isolateAttribute("position");
 			_isolatedVertexPositionDataDirty = false;
 		}
 		return _isolatedVertexPositionData;
 	}
 	
 	/**
-	 * Isolate and returns a Vector.Number of a specific buffer type
-	 *
-	 * - stripBuffer(0, 3), return only the vertices
-	 * - stripBuffer(3, 3): return only the normals
-	 * - stripBuffer(6, 3): return only the tangents
-	 * - stripBuffer(9, 2): return only the uv's
-	 * - stripBuffer(11, 2): return only the secondary uv's
+	 * Isolates and returns all data for the attribute with the given name,
+	 * typically one of "position", "normal", "tangent", "UV", or "secondaryUV".
+	 */
+	public function isolateAttribute(name:String):Vector<Float>
+	{
+		final attribute:AttributeDefinition = definition.get(name);
+		if (attribute != null)
+		{
+			return stripBuffer(attribute.offset, attribute.length);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	/**
+	 * Isolates and returns a specific subset of this geometry.
+	 * @see `isolateAttribute`
 	 */
 	public function stripBuffer(offset:Int, numEntries:Int):Vector<Float>
 	{
 		var data:Vector<Float> = new Vector<Float>(_numVertices*numEntries);
 		var i:Int = 0, j:Int = offset;
-		var skip:Int = 13 - numEntries;
+		var skip:Int = definition.length - numEntries;
 		
 		for (v in 0..._numVertices) {
 			for (k in 0...numEntries)
@@ -373,60 +418,73 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 		return data;
 	}
 	
-	public function fromVectors(verts:Vector<Float>, uvs:Vector<Float>, normals:Vector<Float>, tangents:Vector<Float>):Void
+	public function setAttributeData(attributeName:String, data:Vector<Float>):Void
 	{
-		var vertLen:Int = Std.int(verts.length/3*13);
-		
-		var index:Int = 0;
-		var v:Int = 0;
-		var n:Int = 0;
-		var t:Int = 0;
-		var u:Int = 0;
-		
-		var data:Vector<Float> = new Vector<Float>(vertLen, true);
-		
-		while (index < vertLen) {
-			data[index++] = verts[v++];
-			data[index++] = verts[v++];
-			data[index++] = verts[v++];
-			
-			if (normals != null && normals.length > 0) {
-				data[index++] = normals[n++];
-				data[index++] = normals[n++];
-				data[index++] = normals[n++];
-			} else {
-				data[index++] = 0;
-				data[index++] = 0;
-				data[index++] = 0;
-			}
-			
-			if (tangents != null && tangents.length > 0) {
-				data[index++] = tangents[t++];
-				data[index++] = tangents[t++];
-				data[index++] = tangents[t++];
-			} else {
-				data[index++] = 0;
-				data[index++] = 0;
-				data[index++] = 0;
-			}
-			
-			if (uvs != null && uvs.length > 0) {
-				data[index++] = uvs[u];
-				data[index++] = uvs[u + 1];
-				// use same secondary uvs as primary
-				data[index++] = uvs[u++];
-				data[index++] = uvs[u++];
-			} else {
-				data[index++] = 0;
-				data[index++] = 0;
-				data[index++] = 0;
-				data[index++] = 0;
-			}
+		if (_setAttributeData(attributeName, data))
+		{
+			updateData(_vertexData);
+		}
+	}
+	
+	private function _setAttributeData(attributeName:String, data:Vector<Float>):Bool
+	{
+		final attribute:AttributeDefinition = definition.get(attributeName);
+		if (data == null || attribute == null)
+		{
+			return false;
 		}
 		
+		final attributeLength:Int = attribute.length;
+		final vertexLength:Int = _vertexData.length;
+		
+		var inputIndex:Int = 0;
+		var outputIndex:Int = attribute.offset;
+		while (inputIndex + attributeLength < data.length
+			&& outputIndex + attributeLength < _vertexData.length)
+		{
+			for (i in 0...attributeLength)
+			{
+				_vertexData[outputIndex + i] = data[inputIndex + i];
+			}
+			
+			inputIndex += attributeLength;
+			outputIndex += vertexLength;
+		}
+		
+		return true;
+	}
+	
+	public function fromVectors(positions:Vector<Float>, uvs:Vector<Float>, normals:Vector<Float>, tangents:Vector<Float>):Void
+	{
+		if (positions != null)
+		{
+			final newLength:Int = Std.int(positions.length / 3 * definition.length);
+			if (newLength < _vertexData.length)
+			{
+				_vertexData = _vertexData.slice(0, newLength);
+			}
+			else if (newLength > _vertexData.length)
+			{
+				final newData:Vector<Float> = new Vector<Float>(newLength, true);
+				for (i in 0..._vertexData.length)
+				{
+					newData[i] = _vertexData[i];
+				}
+				_vertexData = newData;
+			}
+			
+			_setAttributeData("position", positions);
+		}
+		
+		_setAttributeData("normal", normals);
 		autoDeriveVertexNormals = !(normals != null && normals.length > 0);
+		
+		_setAttributeData("tangent", tangents);
 		autoDeriveVertexTangents = !(tangents != null && tangents.length > 0);
+		
+		_setAttributeData("UV", uvs);
 		autoGenerateDummyUVs = !(uvs != null && uvs.length > 0);
-		updateData(data);
+		
+		updateData(_vertexData);
 	}
 }

@@ -1,0 +1,98 @@
+package away3d.core.base.data;
+
+import openfl.display3D.Context3DVertexBufferFormat;
+import haxe.ds.ReadOnlyArray;
+
+using Lambda;
+
+/**
+ * The contents of a single vertex in a `CompactSubGeometry`.
+ */
+class VertexDefinition {
+	/**
+	 * The default attributes used by `CompactSubGeometry`: position, normal,
+	 * tangent, UV, and secondaryUV.
+	 */
+	public static final defaultAttributes:ReadOnlyArray<AttributeDefinition> = [
+		new AttributeDefinition("position", 3),
+		new AttributeDefinition("normal", 3),
+		new AttributeDefinition("tangent", 3),
+		new AttributeDefinition("UV", 2),
+		new AttributeDefinition("secondaryUV", 2)
+	];
+	
+	/**
+	 * A definition using `defaultAttributes`: position, normal, tangent, UV,
+	 * and secondaryUV.
+	 */
+	public static final defaultVertexDefinition:VertexDefinition = new VertexDefinition(defaultAttributes);
+	
+	public final attributes:ReadOnlyArray<AttributeDefinition>;
+	
+	/**
+	 * The combined length of all attributes; the total number of float values
+	 * stored per vertex.
+	 */
+	public final length:Int;
+	
+	public function new(attributes:ReadOnlyArray<AttributeDefinition>) {
+		var attributes:Array<AttributeDefinition> = attributes.copy();
+		var length:Int = 0;
+		
+		for(index => attribute in attributes) {
+			//If an offset was already set, the attribute is most likely in use
+			//elsewhere. Instead of modifying it, make a copy.
+			if(attribute.offset != -1 && attribute.offset != length) {
+				attributes[index] = attribute.clone();
+			}
+			
+			attribute.offset = length;
+			length += attribute.length;
+		}
+		
+		this.length = length;
+		this.attributes = attributes;
+	}
+	
+	public function get(attributeName:String):AttributeDefinition {
+		for(attribute in attributes) {
+			if(attribute.name == attributeName) {
+				return attribute;
+			}
+		}
+		return null;
+	}
+}
+
+class AttributeDefinition {
+	public final length:Int;
+	
+	@:allow(away3d.core.base.data.VertexDefinition)
+	public var offset(default, null):Int = -1;
+	
+	public final name:String;
+	
+	public final vertexBufferFormat:Context3DVertexBufferFormat;
+	
+	public inline function new(name:String, length:Int) {
+		this.name = name;
+		this.length = length;
+		
+		vertexBufferFormat = switch (length) {
+			case 1:
+				FLOAT_1;
+			case 2:
+				FLOAT_2;
+			case 3:
+				FLOAT_3;
+			case 4:
+				FLOAT_4;
+			default:
+				throw length + " should be 1-4";
+		};
+	}
+	
+	public inline function clone():AttributeDefinition {
+		return new AttributeDefinition(name, length);
+	}
+}
