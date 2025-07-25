@@ -120,13 +120,6 @@ class ParticleGeometryHelper
 						final inUVDefinition:AttributeDefinition = compact.definition.get("UV");
 						
 						for (k in 0...compact.numVertices) {
-							/*
-							 * 0 - 2: vertex position X, Y, Z
-							 * 3 - 5: normal X, Y, Z
-							 * 6 - 8: tangent X, Y, Z
-							 * 9 - 10: U V
-							 * 11 - 12: Secondary U V
-							 */
 							product = k*compact.definition.length;
 							
 							if (inPositionDefinition != null && positionDefinition != null && vertexTransform != null) {
@@ -174,7 +167,6 @@ class ParticleGeometryHelper
 								
 								attributesDone.push("UV");
 							}
-							
 						}
 					}
 					
