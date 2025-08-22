@@ -274,7 +274,7 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 	
 	public function clone():ISubGeometry
 	{
-		var clone:CompactSubGeometry = new CompactSubGeometry();
+		var clone:CompactSubGeometry = new CompactSubGeometry(definition);
 		clone._autoDeriveVertexNormals = _autoDeriveVertexNormals;
 		clone._autoDeriveVertexTangents = _autoDeriveVertexTangents;
 		clone.updateData(_vertexData.concat());
