@@ -323,8 +323,10 @@ class ShaderCompiler
 		createNormalRegisters();
 		if (_dependencyCounter.globalPosDependencies > 0 || _forceSeperateMVP)
 			compileGlobalPositionCode();
-		compileProjectionCode();
+		if (_dependencyCounter.projectionDependencies > 0)
+			_sharedRegisters.projectionFragment = _registerCache.getFreeVarying();
 		compileMethodsCode();
+		compileProjectionCode();
 		compileFragmentOutput();
 		_fragmentPostLightCode = fragmentCode;
 	}
@@ -465,7 +467,6 @@ class ShaderCompiler
 		var code:String;
 
 		if (_dependencyCounter.projectionDependencies > 0) {
-			_sharedRegisters.projectionFragment = _registerCache.getFreeVarying();
 			code = "m44 vt5, " + pos + ", vc0		\n" +
 				"mov " + _sharedRegisters.projectionFragment + ", vt5\n" +
 				"mov op, vt5\n";
