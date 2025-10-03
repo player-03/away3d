@@ -46,10 +46,10 @@ class ParticleGeometryHelper
 		var tempTangents:Vector3D = new Vector3D();
 		var tempUV:Point = new Point();
 		
-		final positionDefinition:AttributeDefinition = vertexDefinition.get("position");
-		final normalDefinition:AttributeDefinition = vertexDefinition.get("normal");
-		final tangentDefinition:AttributeDefinition = vertexDefinition.get("tangent");
-		final uvDefinition:AttributeDefinition = vertexDefinition.get("UV");
+		var positionDefinition:AttributeDefinition = vertexDefinition.get("position");
+		var normalDefinition:AttributeDefinition = vertexDefinition.get("normal");
+		var tangentDefinition:AttributeDefinition = vertexDefinition.get("tangent");
+		var uvDefinition:AttributeDefinition = vertexDefinition.get("UV");
 		
 		for (i in 0...numParticles) {
 			sourceSubGeometries = geometries[i].subGeometries;
@@ -99,9 +99,9 @@ class ParticleGeometryHelper
 				var sourceVertices:Vector<Float>;
 				var attributesDone:Array<String> = [];
 				
-				final inStride:Int = compact.definition.length;
-				final outStride:Int = subGeometry.definition.length;
-				final startIndex:Int = vertices.length;
+				var inStride:Int = compact.definition.length;
+				var outStride:Int = subGeometry.definition.length;
+				var startIndex:Int = vertices.length;
 				vertices.length += outStride * compact.numVertices;
 				
 				if (compact != null) {
@@ -114,10 +114,10 @@ class ParticleGeometryHelper
 						var invVertexTransform:Matrix3D = particleGeometryTransform.invVertexTransform;
 						var UVTransform:Matrix = particleGeometryTransform.UVTransform;
 						
-						final inPositionDefinition:AttributeDefinition = compact.definition.get("position");
-						final inNormalDefinition:AttributeDefinition = compact.definition.get("normal");
-						final inTangentDefinition:AttributeDefinition = compact.definition.get("tangent");
-						final inUVDefinition:AttributeDefinition = compact.definition.get("UV");
+						var inPositionDefinition:AttributeDefinition = compact.definition.get("position");
+						var inNormalDefinition:AttributeDefinition = compact.definition.get("normal");
+						var inTangentDefinition:AttributeDefinition = compact.definition.get("tangent");
+						var inUVDefinition:AttributeDefinition = compact.definition.get("UV");
 						
 						for (k in 0...compact.numVertices) {
 							product = k*compact.definition.length;
@@ -175,7 +175,7 @@ class ParticleGeometryHelper
 							continue;
 						}
 						
-						final sourceAttribute:AttributeDefinition = compact.definition.get(outAttribute.name);
+						var sourceAttribute:AttributeDefinition = compact.definition.get(outAttribute.name);
 						
 						if (sourceAttribute == null) {
 							throw 'Input data does not include attribute "${ outAttribute.name }". It defines "'
@@ -186,9 +186,9 @@ class ParticleGeometryHelper
 							throw 'Length mismatch for attribute "${ outAttribute.name }": source has length ${ sourceAttribute.length }, destination needs length ${ outAttribute.name }.';
 						}
 						
-						final length:Int = outAttribute.length;
-						final inOffset:Int = sourceAttribute.offset;
-						final outOffset:Int = outAttribute.offset;
+						var length:Int = outAttribute.length;
+						var inOffset:Int = sourceAttribute.offset;
+						var outOffset:Int = outAttribute.offset;
 						
 						for (k in 0...compact.numVertices) {
 							for (l in 0...length) {
