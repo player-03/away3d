@@ -39,7 +39,9 @@ class VertexDefinition {
 		var attributes:Array<AttributeDefinition> = attributes.copy();
 		var length:Int = 0;
 		
-		for(index => attribute in attributes) {
+		for(index in 0...attributes.length) {
+			var attribute:AttributeDefinition = attributes[index];
+			
 			//If an offset was already set, the attribute is most likely in use
 			//elsewhere. Instead of modifying it, make a copy.
 			if(attribute.offset != -1 && attribute.offset != length) {
