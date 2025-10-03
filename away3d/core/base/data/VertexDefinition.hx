@@ -13,7 +13,7 @@ class VertexDefinition {
 	 * The default attributes used by `CompactSubGeometry`: position, normal,
 	 * tangent, UV, and secondaryUV.
 	 */
-	public static final defaultAttributes:ReadOnlyArray<AttributeDefinition> = [
+	public static var defaultAttributes(default, null):ReadOnlyArray<AttributeDefinition> = [
 		new AttributeDefinition("position", 3),
 		new AttributeDefinition("normal", 3),
 		new AttributeDefinition("tangent", 3),
@@ -25,15 +25,15 @@ class VertexDefinition {
 	 * A definition using `defaultAttributes`: position, normal, tangent, UV,
 	 * and secondaryUV.
 	 */
-	public static final defaultVertexDefinition:VertexDefinition = new VertexDefinition(defaultAttributes);
+	public static var defaultVertexDefinition(default, null):VertexDefinition = new VertexDefinition(defaultAttributes);
 	
-	public final attributes:ReadOnlyArray<AttributeDefinition>;
+	public var attributes(default, null):ReadOnlyArray<AttributeDefinition>;
 	
 	/**
 	 * The combined length of all attributes; the total number of float values
 	 * stored per vertex.
 	 */
-	public final length:Int;
+	public var length(default, null):Int;
 	
 	public function new(attributes:ReadOnlyArray<AttributeDefinition>) {
 		var attributes:Array<AttributeDefinition> = attributes.copy();
@@ -65,14 +65,14 @@ class VertexDefinition {
 }
 
 class AttributeDefinition {
-	public final length:Int;
+	public var length(default, null):Int;
 	
 	@:allow(away3d.core.base.data.VertexDefinition)
 	public var offset(default, null):Int = -1;
 	
-	public final name:String;
+	public var name(default, null):String;
 	
-	public final vertexBufferFormat:Context3DVertexBufferFormat;
+	public var vertexBufferFormat(default, null):Context3DVertexBufferFormat;
 	
 	public inline function new(name:String, length:Int) {
 		this.name = name;

@@ -12,7 +12,7 @@ import openfl.Vector;
 
 class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 {
-	public final definition:VertexDefinition;
+	public var definition(default, null):VertexDefinition;
 	
 	public var numVertices(get, never):Int;
 	public var secondaryUVStride(get, never):Int;
@@ -113,7 +113,7 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 	
 	public function activateSpecificVertexBuffer(attributeName:String, index:Int, stage3DProxy:Stage3DProxy):Void
 	{
-		final attribute:AttributeDefinition = definition.get(attributeName);
+		var attribute:AttributeDefinition = definition.get(attributeName);
 		if (attribute == null)
 		{
 			return;
@@ -277,7 +277,7 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 	
 	private inline function getAttributeOffset(attributeName:String):Int
 	{
-		final attribute:AttributeDefinition = definition.get(attributeName);
+		var attribute:AttributeDefinition = definition.get(attributeName);
 		return attribute != null ? attribute.offset : 0;
 	}
 	
@@ -331,7 +331,7 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 	 */
 	public function isolateAttribute(name:String):Vector<Float>
 	{
-		final attribute:AttributeDefinition = definition.get(name);
+		var attribute:AttributeDefinition = definition.get(name);
 		if (attribute != null)
 		{
 			return stripBuffer(attribute.offset, attribute.length);
@@ -371,14 +371,14 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 	
 	private function _setAttributeData(attributeName:String, data:Vector<Float>):Bool
 	{
-		final attribute:AttributeDefinition = definition.get(attributeName);
+		var attribute:AttributeDefinition = definition.get(attributeName);
 		if (data == null || attribute == null)
 		{
 			return false;
 		}
 		
-		final attributeLength:Int = attribute.length;
-		final vertexLength:Int = _vertexData.length;
+		var attributeLength:Int = attribute.length;
+		var vertexLength:Int = _vertexData.length;
 		
 		var inputIndex:Int = 0;
 		var outputIndex:Int = attribute.offset;
@@ -401,14 +401,14 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 	{
 		if (positions != null)
 		{
-			final newLength:Int = Std.int(positions.length / 3 * definition.length);
+			var newLength:Int = Std.int(positions.length / 3 * definition.length);
 			if (newLength < _vertexData.length)
 			{
 				_vertexData = _vertexData.slice(0, newLength);
 			}
 			else if (newLength > _vertexData.length)
 			{
-				final newData:Vector<Float> = new Vector<Float>(newLength, true);
+				var newData:Vector<Float> = new Vector<Float>(newLength, true);
 				for (i in 0..._vertexData.length)
 				{
 					newData[i] = _vertexData[i];
