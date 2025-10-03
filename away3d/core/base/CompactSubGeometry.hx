@@ -252,27 +252,33 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 	
 	override private function get_vertexOffset():Int
 	{
-		return definition.get("position")?.offset ?? 0;
+		return getAttributeOffset("position");
 	}
 	
 	override private function get_vertexNormalOffset():Int
 	{
-		return definition.get("normal")?.offset ?? 0;
+		return getAttributeOffset("normal");
 	}
 	
 	override private function get_vertexTangentOffset():Int
 	{
-		return definition.get("tangent")?.offset ?? 0;
+		return getAttributeOffset("tangent");
 	}
 	
 	override private function get_UVOffset():Int
 	{
-		return definition.get("UV")?.offset ?? 0;
+		return getAttributeOffset("UV");
 	}
 	
 	private function get_secondaryUVOffset():Int
 	{
-		return definition.get("secondaryUV")?.offset ?? 0;
+		return getAttributeOffset("secondaryUV");
+	}
+	
+	private inline function getAttributeOffset(attributeName:String):Int
+	{
+		final attribute:AttributeDefinition = definition.get(attributeName);
+		return attribute != null ? attribute.offset : 0;
 	}
 	
 	override public function dispose():Void
