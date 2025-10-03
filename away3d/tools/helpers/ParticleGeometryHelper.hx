@@ -126,7 +126,11 @@ class ParticleGeometryHelper
 								tempVertex.x = sourceVertices[product + inPositionDefinition.offset];
 								tempVertex.y = sourceVertices[product + inPositionDefinition.offset + 1];
 								tempVertex.z = sourceVertices[product + inPositionDefinition.offset + 2];
+								#if flash
+								tempVertex = vertexTransform.transformVector(tempVertex);
+								#else
 								vertexTransform.transformVectorToOutput(tempVertex, tempVertex);
+								#end
 								vertices[startIndex + k * vertexDefinition.length + positionDefinition.offset] = tempVertex.x;
 								vertices[startIndex + k * vertexDefinition.length + positionDefinition.offset + 1] = tempVertex.y;
 								vertices[startIndex + k * vertexDefinition.length + positionDefinition.offset + 2] = tempVertex.z;
@@ -138,7 +142,11 @@ class ParticleGeometryHelper
 								tempNormal.x = sourceVertices[product + inNormalDefinition.offset];
 								tempNormal.y = sourceVertices[product + inNormalDefinition.offset + 1];
 								tempNormal.z = sourceVertices[product + inNormalDefinition.offset + 2];
+								#if flash
+								tempNormal = invVertexTransform.deltaTransformVector(tempNormal);
+								#else
 								invVertexTransform.deltaTransformVectorToOutput(tempNormal, tempNormal);
+								#end
 								vertices[startIndex + k * vertexDefinition.length + normalDefinition.offset] = tempNormal.x;
 								vertices[startIndex + k * vertexDefinition.length + normalDefinition.offset + 1] = tempNormal.y;
 								vertices[startIndex + k * vertexDefinition.length + normalDefinition.offset + 2] = tempNormal.z;
@@ -150,7 +158,11 @@ class ParticleGeometryHelper
 								tempTangents.x = sourceVertices[product + inTangentDefinition.offset];
 								tempTangents.y = sourceVertices[product + inTangentDefinition.offset + 1];
 								tempTangents.z = sourceVertices[product + inTangentDefinition.offset + 2];
+								#if flash
+								tempTangents = invVertexTransform.deltaTransformVector(tempTangents);
+								#else
 								invVertexTransform.deltaTransformVectorToOutput(tempTangents, tempTangents);
+								#end
 								vertices[startIndex + k * vertexDefinition.length + tangentDefinition.offset] = tempTangents.x;
 								vertices[startIndex + k * vertexDefinition.length + tangentDefinition.offset + 1] = tempTangents.y;
 								vertices[startIndex + k * vertexDefinition.length + tangentDefinition.offset + 2] = tempTangents.z;
@@ -161,7 +173,11 @@ class ParticleGeometryHelper
 							if (inUVDefinition != null && uvDefinition != null && UVTransform != null) {
 								tempUV.x = sourceVertices[product + inUVDefinition.offset];
 								tempUV.y = sourceVertices[product + inUVDefinition.offset + 1];
+								#if flash
+								tempUV = UVTransform.transformPoint(tempUV);
+								#else
 								UVTransform.transformPointToOutput(tempUV, tempUV);
+								#end
 								vertices[startIndex + k * vertexDefinition.length + uvDefinition.offset] = tempUV.x;
 								vertices[startIndex + k * vertexDefinition.length + uvDefinition.offset + 1] = tempUV.y;
 								
