@@ -1,7 +1,10 @@
 package away3d.core.base.data;
 
 import openfl.display3D.Context3DVertexBufferFormat;
+
+#if haxe4
 import haxe.ds.ReadOnlyArray;
+#end
 
 using Lambda;
 
@@ -98,3 +101,20 @@ class AttributeDefinition {
 		return new AttributeDefinition(name, length);
 	}
 }
+
+#if !haxe4
+@:forward(copy, filter, indexOf, iterator, join, lastIndexOf, map, slice, toString)
+abstract ReadOnlyArray<T>(Array<T>) from Array<T> to Iterable<T>
+{
+	public var length(get, never):Int;
+
+	inline function get_length()
+		return this.length;
+
+	@:arrayAccess inline function get(i:Int)
+		return this[i];
+
+	public inline function concat(a:ReadOnlyArray<T>):Array<T>
+		return this.concat(cast a);
+}
+#end
