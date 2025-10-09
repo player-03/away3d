@@ -74,6 +74,11 @@ class VertexDefinition
 		}
 		return null;
 	}
+	
+	public inline function toString():String
+	{
+		return Std.string(attributes);
+	}
 }
 
 class AttributeDefinition
@@ -110,6 +115,11 @@ class AttributeDefinition
 	public inline function clone():AttributeDefinition
 	{
 		return new AttributeDefinition(name, length);
+	}
+	
+	public inline function toString():String
+	{
+		return name + ":FLOAT_" + length;
 	}
 }
 
