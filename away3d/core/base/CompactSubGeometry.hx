@@ -377,6 +377,11 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 			return false;
 		}
 
+		if (_vertexData == null)
+		{
+			_vertexData = new Vector(definition.length * Std.int(data.length / attribute.length));
+		}
+
 		var attributeLength:Int = attribute.length;
 		var vertexLength:Int = _vertexData.length;
 
@@ -402,14 +407,15 @@ class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 		if (positions != null)
 		{
 			var newLength:Int = Std.int(positions.length / 3 * definition.length);
-			if (newLength < _vertexData.length)
+			var oldLength:Int = _vertexData != null ? _vertexData.length : 0;
+			if (newLength < oldLength)
 			{
 				_vertexData = _vertexData.slice(0, newLength);
 			}
-			else if (newLength > _vertexData.length)
+			else if (newLength > oldLength)
 			{
 				var newData:Vector<Float> = new Vector<Float>(newLength, true);
-				for (i in 0..._vertexData.length)
+				for (i in 0...oldLength)
 				{
 					newData[i] = _vertexData[i];
 				}
