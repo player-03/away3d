@@ -446,13 +446,13 @@ class ShaderCompiler
 	{
 		_sharedRegisters.globalPositionVertex = _registerCache.getFreeVertexVectorTemp();
 		_registerCache.addVertexTempUsages(_sharedRegisters.globalPositionVertex, _dependencyCounter.globalPosDependencies);
-		var positionMatrixReg:ShaderRegisterElement = _registerCache.getFreeVertexConstant();
+		_sharedRegisters.sceneTransform = _registerCache.getFreeVertexConstant();
 		_registerCache.getFreeVertexConstant();
 		_registerCache.getFreeVertexConstant();
 		_registerCache.getFreeVertexConstant();
-		_sceneMatrixIndex = positionMatrixReg.index*4;
+		_sceneMatrixIndex = _sharedRegisters.sceneTransform.index*4;
 
-		_vertexCode += "m44 " + _sharedRegisters.globalPositionVertex + ", " + _sharedRegisters.localPosition + ", " + positionMatrixReg + "\n";
+		_vertexCode += "m44 " + _sharedRegisters.globalPositionVertex + ", " + _sharedRegisters.localPosition + ", " + _sharedRegisters.sceneTransform + "\n";
 
 		if (_dependencyCounter.usesGlobalPosFragment) {
 			_sharedRegisters.globalPositionVarying = _registerCache.getFreeVarying();
