@@ -131,4 +131,28 @@ class ShaderRegisterData
 	{
 	
 	}
+	
+	public function reset():Void
+	{
+		normalVarying = null;
+		tangentVarying = null;
+		bitangentVarying = null;
+		uvVarying = null;
+		secondaryUVVarying = null;
+		viewDirVarying = null;
+		shadedTarget = null;
+		globalPositionVertex = null;
+		globalPositionVarying = null;
+		localPosition = null;
+		normalInput = null;
+		tangentInput = null;
+		animatedNormal = null;
+		animatedTangent = null;
+		commons = null;
+		projectionFragment = null;
+		normalFragment = null;
+		viewDirFragment = null;
+		bitangent = null;
+		custom = null;
+	}
 }
