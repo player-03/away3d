@@ -53,6 +53,9 @@ class ShaderRegisterData
 	/**
 	 * Vertex temp. Contains the vertex position in world space. To use this,
 	 * set either `needsGlobalVertexPos` or `needsGlobalFragmentPos`.
+	 * 
+	 * If enabled (i.e., not null), this will be used instead of `localPosition`
+	 * to calculate the vertex's screen position.
 	 */
 	public var globalPositionVertex:ShaderRegisterElement;
 	
@@ -64,6 +67,9 @@ class ShaderRegisterData
 	
 	/**
 	 * Vertex temp. Contains the vertex position in local space.
+	 * 
+	 * By default, this will be used to calculate the vertex's screen position.
+	 * However, `globalPositionVertex` will be used instead if enabled.
 	 */
 	public var localPosition:ShaderRegisterElement;
 	
