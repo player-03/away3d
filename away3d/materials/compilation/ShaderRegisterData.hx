@@ -74,6 +74,16 @@ class ShaderRegisterData
 	public var localPosition:ShaderRegisterElement;
 	
 	/**
+	 * Vertex constant. Contains the scene transform matrix, which converts
+	 * from local to world space. To use this, set either `needsGlobalVertexPos`
+	 * or `needsGlobalFragmentPos`.
+	 * 
+	 * If this is enabled, `vc0` will contain only the view projection matrix.
+	 * Otherwise, `vc0` will store both matrices combined.
+	 */
+	public var sceneTransform:ShaderRegisterElement;
+	
+	/**
 	 * Vertex attribute. Contains the normal to the vertex, in local space. Not
 	 * assumed to be normalized.
 	 */
@@ -152,6 +162,7 @@ class ShaderRegisterData
 		globalPositionVertex = null;
 		globalPositionVarying = null;
 		localPosition = null;
+		sceneTransform = null;
 		normalInput = null;
 		tangentInput = null;
 		animatedNormal = null;
