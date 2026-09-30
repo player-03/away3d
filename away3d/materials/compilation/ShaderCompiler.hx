@@ -198,7 +198,6 @@ class ShaderCompiler
 	{
 		_registerCache = new ShaderRegisterCache(profile);
 		_registerCache.vertexAttributesOffset = 1;
-		_registerCache.reset();
 	}
 
 	/**
@@ -311,6 +310,7 @@ class ShaderCompiler
 		_fragmentCode = "";
 
 		_sharedRegisters.reset();
+		_registerCache.reset();
 
 		_sharedRegisters.localPosition = _registerCache.getFreeVertexVectorTemp();
 		_registerCache.addVertexTempUsages(_sharedRegisters.localPosition, 1);
