@@ -446,6 +446,7 @@ class ShaderCompiler
 	{
 		_sharedRegisters.globalPositionVertex = _registerCache.getFreeVertexVectorTemp();
 		_registerCache.addVertexTempUsages(_sharedRegisters.globalPositionVertex, _dependencyCounter.globalPosDependencies);
+
 		_sharedRegisters.sceneTransform = _registerCache.getFreeVertexConstant();
 		_registerCache.getFreeVertexConstant();
 		_registerCache.getFreeVertexConstant();
@@ -465,17 +466,22 @@ class ShaderCompiler
 	 */
 	private function compileProjectionCode():Void
 	{
+		_sharedRegisters.clipSpacePosition = _registerCache.getFreeVertexVectorTemp();
+		_registerCache.addVertexTempUsages(_sharedRegisters.clipSpacePosition, 1);
+
 		var pos:String = _dependencyCounter.globalPosDependencies > 0 || _forceSeperateMVP? _sharedRegisters.globalPositionVertex.toString() : _animationTargetRegisters[0];
-		var code:String;
+		var projected:String = _sharedRegisters.clipSpacePosition.toString();
+		_vertexCode += 'm44 $projected, $pos, vc0		\n';
+
+		compileMethodsClipSpace();
 
 		if (_dependencyCounter.projectionDependencies > 0) {
-			code = "m44 vt5, " + pos + ", vc0		\n" +
-				"mov " + _sharedRegisters.projectionFragment + ", vt5\n" +
-				"mov op, vt5\n";
-		} else
-			code = "m44 op, " + pos + ", vc0		\n";
+			_vertexCode += 'mov ${_sharedRegisters.projectionFragment}, $projected\n';
+		}
 
-		_vertexCode += code;
+		_vertexCode += 'mov op, $projected\n';
+
+		_registerCache.removeVertexTempUsage(_sharedRegisters.clipSpacePosition);
 	}
 
 	/**
@@ -984,7 +990,7 @@ class ShaderCompiler
 	}
 
 	/**
-	 * Compiles the code for the methods.
+	 * Compiles the code for the methods, except post-projection code.
 	 */
 	private function compileMethods():Void
 	{
@@ -1023,6 +1029,23 @@ class ShaderCompiler
 		if (_methodSetup._colorTransformMethod != null) {
 			_vertexCode += _methodSetup._colorTransformMethod.getVertexCode(_methodSetup._colorTransformMethodVO, _registerCache);
 			_fragmentCode += _methodSetup._colorTransformMethod.getFragmentCode(_methodSetup._colorTransformMethodVO, _registerCache, _sharedRegisters.shadedTarget);
+		}
+	}
+
+	/**
+	 * Compiles the methods' post-projection code (`getClipSpaceVertexCode()`).
+	 */
+	private function compileMethodsClipSpace():Void
+	{
+		var methods:Vector<MethodVOSet> = _methodSetup._methods;
+		var numMethods:Int = methods.length;
+		var method:EffectMethodBase;
+		var data:MethodVO;
+
+		for (i in 0...numMethods) {
+			method = methods[i].method;
+			data = methods[i].data;
+			_vertexCode += method.getClipSpaceVertexCode(data, _registerCache);
 		}
 	}
 

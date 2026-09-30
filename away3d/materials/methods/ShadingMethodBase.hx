@@ -173,6 +173,19 @@ class ShadingMethodBase extends NamedAssetBase
 	}
 	
 	/**
+	 * Get additional vertex shader code for this method. This code will be run
+	 * after projecting the vertex to clip space, and can access and modify
+	 * `sharedRegisters.clipSpacePosition`.
+	 * @param vo The MethodVO object linking this method with the pass currently being compiled.
+	 * @param regCache The register cache used during the compilation.
+	 * @private
+	 */
+	@:allow(away3d) private function getClipSpaceVertexCode(vo:MethodVO, regCache:ShaderRegisterCache):String
+	{
+		return "";
+	}
+	
+	/**
 	 * Sets the render state for this method.
 	 *
 	 * @param vo The MethodVO object linking this method with the pass currently being compiled.

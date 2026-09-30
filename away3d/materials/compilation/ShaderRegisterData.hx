@@ -74,6 +74,15 @@ class ShaderRegisterData
 	public var localPosition:ShaderRegisterElement;
 	
 	/**
+	 * Vertex temp. Contains the vertex position in clip space. Only available
+	 * during `getClipSpaceVertexCode()`.
+	 * 
+	 * To convert this from clip space to screen space, divide `xyz` by `w`. Be
+	 * sure to multiply by `w` again later, because OpenGL expects clip space.
+	 */
+	public var clipSpacePosition:ShaderRegisterElement;
+	
+	/**
 	 * Vertex constant. Contains the scene transform matrix, which converts
 	 * from local to world space. To use this, set either `needsGlobalVertexPos`
 	 * or `needsGlobalFragmentPos`.
