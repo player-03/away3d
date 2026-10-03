@@ -31,26 +31,6 @@ class VertexDefinition
 	 */
 	public static var defaultVertexDefinition(default, null):VertexDefinition = new VertexDefinition(defaultAttributes);
 
-	/**
-	 * Creates a new vertex definition containing all attributes from both
-	 * `definitionA` and `definitionB`. If the same attribute is found in both,
-	 * only the longer version is included.
-	 */
-	public static function merge(definitionA:VertexDefinition, definitionB:VertexDefinition):VertexDefinition
-	{
-		var attributes:Array<AttributeDefinition> = definitionA.attributes.copy();
-		for (attributeB in definitionB.attributes) {
-			var attributeA:AttributeDefinition = definitionA.get(attributeB.name);
-			if (attributeA == null) {
-				attributes.push(attributeB);
-			} else if (attributeA.length < attributeB.length) {
-				var index:Int = attributes.indexOf(attributeA);
-				attributes[index >= 0 ? index : attributes.length] = attributeB;
-			}
-		}
-		return new VertexDefinition(attributes);
-	}
-
 	public var attributes(default, null):ReadOnlyArray<AttributeDefinition>;
 
 	/**
@@ -79,6 +59,33 @@ class VertexDefinition
 
 		this.length = length;
 		this.attributes = attributes;
+	}
+
+	/**
+	 * Returns a vertex definition containing this definition's attributes plus
+	 * all unique attributes from the given array(s). If the same attribute is
+	 * found multiple times, only the longer version will be included. If this
+	 * already contains everything from `attributes`, it is returned unchanged.
+	 */
+	public function concatUnique(attributes:ReadOnlyArray<AttributeDefinition>):VertexDefinition
+	{
+		var result:Array<AttributeDefinition> = null;
+		for (newAttribute in attributes) {
+			var existing:AttributeDefinition = get(newAttribute.name);
+			if (existing != null && existing.length >= newAttribute.length) {
+				continue;
+			}
+			if (result == null) {
+				result = this.attributes.copy();
+			}
+			if (existing == null) {
+				result.push(newAttribute);
+			} else {
+				var index:Int = result.indexOf(existing);
+				result[index >= 0 ? index : result.length] = newAttribute;
+			}
+		}
+		return result == null ? this : new VertexDefinition(result);
 	}
 
 	public function get(attributeName:String):AttributeDefinition
