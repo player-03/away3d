@@ -12,6 +12,12 @@ import openfl.Vector;
 
 class CompactSubGeometry extends SubGeometryBase implements ISubGeometry
 {
+	/**
+	 * The maximum number of vertices in a single subgeometry. Any more than
+	 * this can't be indexed, because indices are unsigned shorts.
+	 */
+	public static inline var MAX_NUM_VERTICES:Int = 65536;
+
 	public var definition(default, null):VertexDefinition;
 
 	public var numVertices(get, never):Int;

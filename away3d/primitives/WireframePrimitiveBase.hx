@@ -34,8 +34,8 @@ class WireframePrimitiveBase extends SegmentSet
 	private function set_color(value:Int):Int
 	{
 		_color = value;
-		for (segRef in _segments) {
-			segRef.segment.startColor = segRef.segment.endColor = value;
+		for (segment in _segments) {
+			segment.startColor = segment.endColor = value;
 		}
 		return value;
 	}
@@ -48,8 +48,8 @@ class WireframePrimitiveBase extends SegmentSet
 	private function set_thickness(value:Float):Float
 	{
 		_thickness = value;
-		for (segRef in _segments) {
-			segRef.segment.thickness = segRef.segment.thickness = value;
+		for (segment in _segments) {
+			segment.thickness = value;
 		}
 		return value;
 	}
