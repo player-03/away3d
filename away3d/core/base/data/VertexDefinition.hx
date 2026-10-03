@@ -44,14 +44,12 @@ class VertexDefinition
 		var attributes:Array<AttributeDefinition> = attributes.copy();
 		var length:Int = 0;
 
-		for (index in 0...attributes.length)
-		{
+		for (index in 0...attributes.length) {
 			var attribute:AttributeDefinition = attributes[index];
 
 			// If an offset was already set, the attribute is most likely in use
 			// elsewhere. Instead of modifying it, make a copy.
-			if (attribute.offset != -1 && attribute.offset != length)
-			{
+			if (attribute.offset != -1 && attribute.offset != length) {
 				attributes[index] = attribute = attribute.clone();
 			}
 
@@ -65,16 +63,14 @@ class VertexDefinition
 
 	public function get(attributeName:String):AttributeDefinition
 	{
-		for (attribute in attributes)
-		{
-			if (attribute.name == attributeName)
-			{
+		for (attribute in attributes) {
+			if (attribute.name == attributeName) {
 				return attribute;
 			}
 		}
 		return null;
 	}
-	
+
 	public inline function toString():String
 	{
 		return Std.string(attributes);
@@ -97,8 +93,7 @@ class AttributeDefinition
 		this.name = name;
 		this.length = length;
 
-		vertexBufferFormat = switch (length)
-		{
+		vertexBufferFormat = switch (length) {
 			case 1:
 				FLOAT_1;
 			case 2:
