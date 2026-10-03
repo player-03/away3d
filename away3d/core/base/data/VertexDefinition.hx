@@ -31,6 +31,26 @@ class VertexDefinition
 	 */
 	public static var defaultVertexDefinition(default, null):VertexDefinition = new VertexDefinition(defaultAttributes);
 
+	/**
+	 * Creates a new vertex definition containing all attributes from both
+	 * `definitionA` and `definitionB`. If the same attribute is found in both,
+	 * only the longer version is included.
+	 */
+	public static function merge(definitionA:VertexDefinition, definitionB:VertexDefinition):VertexDefinition
+	{
+		var attributes:Array<AttributeDefinition> = definitionA.attributes.copy();
+		for (attributeB in definitionB.attributes) {
+			var attributeA:AttributeDefinition = definitionA.get(attributeB.name);
+			if (attributeA == null) {
+				attributes.push(attributeB);
+			} else if (attributeA.length < attributeB.length) {
+				var index:Int = attributes.indexOf(attributeA);
+				attributes[index >= 0 ? index : attributes.length] = attributeB;
+			}
+		}
+		return new VertexDefinition(attributes);
+	}
+
 	public var attributes(default, null):ReadOnlyArray<AttributeDefinition>;
 
 	/**
