@@ -46,6 +46,9 @@ class ParticleGeometryHelper
 		var tempTangents:Vector3D = new Vector3D();
 		var tempUV:Point = new Point();
 		
+		if (vertexDefinition == null) {
+			vertexDefinition = VertexDefinition.defaultVertexDefinition;
+		}
 		var positionDefinition:AttributeDefinition = vertexDefinition.get("position");
 		var normalDefinition:AttributeDefinition = vertexDefinition.get("normal");
 		var tangentDefinition:AttributeDefinition = vertexDefinition.get("tangent");
