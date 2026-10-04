@@ -31,7 +31,7 @@ class Segment
 	public var _startColor:Int;
 	public var _endColor:Int;
 	
-	public function new(start:Vector3D, end:Vector3D, anchor:Vector3D, colorStart:Int = 0x333333, colorEnd:Int = 0x333333, thickness:Float = 1)
+	public function new(start:Vector3D, end:Vector3D, anchor:Vector3D, ?colorStart:Int = 0x333333, ?colorEnd:Int = 0x333333, ?thickness:Float = 1)
 	{
 		// TODO: not yet used: for CurveSegment support
 		anchor = null;
