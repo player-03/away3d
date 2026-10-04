@@ -67,7 +67,9 @@ class SegmentSet extends Mesh {
 		if (material == null) {
 			material = DefaultMaterialManager.getDefaultMaterial(this);
 		}
-		material.addMethod(new SegmentMethod());
+		if (material.hasMethodOfType(SegmentMethod)) {
+			material.addMethod(new SegmentMethod());
+		}
 
 		super(new Geometry(), material);
 
@@ -94,14 +96,7 @@ class SegmentSet extends Mesh {
 				_colorOffset = color.offset;
 			}
 
-			var hasColorMethod:Bool = false;
-			for (i in 0...material.numMethods) {
-				if (Std.isOfType(material.getMethodAt(i), VertexColorMethod)) {
-					hasColorMethod = true;
-					break;
-				}
-			}
-			if (!hasColorMethod) {
+			if (!material.hasMethodOfType(VertexColorMethod)) {
 				material.addMethod(new VertexColorMethod(color.length > 3));
 			}
 		}
