@@ -143,7 +143,8 @@ class SegmentSet extends Mesh {
 
 	override private function onSubGeometryRemoved(event:GeometryEvent):Void
 	{
-		for (i => subGeometry in _subGeometries) {
+		for (i in 0..._subGeometries.length) {
+			var subGeometry:CompactSubGeometry = _subGeometries[i];
 			if (subGeometry == event.subGeometry) {
 				_subGeometries.splice(i, 1);
 				break;
