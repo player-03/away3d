@@ -10,6 +10,7 @@ import away3d.entities.Mesh;
 import away3d.events.GeometryEvent;
 import away3d.library.assets.Asset3DType;
 import away3d.materials.methods.SegmentMethod;
+import away3d.materials.methods.VertexColorMethod;
 import away3d.materials.SinglePassMaterialBase;
 import away3d.materials.utils.DefaultMaterialManager;
 import away3d.primitives.data.Segment;
@@ -18,6 +19,9 @@ import openfl.geom.Matrix3D;
 import openfl.geom.Vector3D;
 import openfl.Vector;
 
+/**
+ * A collection of 3D line segments.
+ */
 class SegmentSet extends Mesh {
 	public static var requiredAttributes(get, null):VertexDefinition;
 	private static function get_requiredAttributes():VertexDefinition {
@@ -50,7 +54,16 @@ class SegmentSet extends Mesh {
 	private var _halfWidthOffset:Int;
 	private var _colorOffset:Int = -1;
 
-	public function new(?material:SinglePassMaterialBase, ?vertexDefinition:VertexDefinition) {
+	/**
+	 * Creates a new `SegmentSet`.
+	 * @param material The material to use.
+	 * @param overrideMaterialColors Whether to use individual `Segment` colors
+	 * instead of the material's color or texture. If false, `Segment` colors
+	 * will be ignored.
+	 * @param vertexDefinition A custom vertex definition containing any other
+	 * attributes needed by `material`.
+	 */
+	public function new(?material:SinglePassMaterialBase, ?overrideMaterialColors:Bool = true, ?vertexDefinition:VertexDefinition) {
 		if (material == null) {
 			material = DefaultMaterialManager.getDefaultMaterial(this);
 		}
@@ -67,13 +80,31 @@ class SegmentSet extends Mesh {
 		if (vertexDefinition == null) {
 			vertexDefinition = VertexDefinition.defaultVertexDefinition;
 		}
-		_vertexDefinition = VertexDefinition.merge(vertexDefinition, requiredAttributes);
+		_vertexDefinition = vertexDefinition.concatUnique(requiredAttributes.attributes);
 
 		_positionOffset = _vertexDefinition.get("position").offset;
 		_oppositeOffset = _vertexDefinition.get("opposite").offset;
 		_halfWidthOffset = _vertexDefinition.get("halfWidth").offset;
-		var color:AttributeDefinition = _vertexDefinition.get("color");
-		if (color != null) _colorOffset = color.offset;
+
+		if (overrideMaterialColors) {
+			_vertexDefinition = _vertexDefinition.concatUnique([VertexColorMethod.COLOR]);
+
+			var color:AttributeDefinition = _vertexDefinition.get("color");
+			if (color != null) {
+				_colorOffset = color.offset;
+			}
+
+			var hasColorMethod:Bool = false;
+			for (i in 0...material.numMethods) {
+				if (Std.isOfType(material.getMethodAt(i), VertexColorMethod)) {
+					hasColorMethod = true;
+					break;
+				}
+			}
+			if (!hasColorMethod) {
+				material.addMethod(new VertexColorMethod(color.length > 3));
+			}
+		}
 	}
 
 	public function addSegment(segment:Segment):Void
