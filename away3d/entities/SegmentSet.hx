@@ -67,7 +67,7 @@ class SegmentSet extends Mesh {
 		if (material == null) {
 			material = DefaultMaterialManager.getDefaultMaterial(this);
 		}
-		if (material.hasMethodOfType(SegmentMethod)) {
+		if (!material.hasMethodOfType(SegmentMethod)) {
 			material.addMethod(new SegmentMethod());
 		}
 
