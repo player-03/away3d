@@ -121,6 +121,7 @@ class SegmentSet extends Mesh {
 
 		segment.index = _segments.length;
 		_segments.push(segment);
+		segment.segmentsBase = this;
 		segment.subSetIndex = _subGeometries.length - 1;
 
 		updateSegment(segment);
