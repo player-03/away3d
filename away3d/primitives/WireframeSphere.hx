@@ -61,7 +61,7 @@ class WireframeSphere extends WireframePrimitiveBase
 		var a:Int, b:Int, c:Int, d:Int;
 		
 		for (j in 1...(_segmentsH + 1)) {
-			for (i in 1...(_segmentsH + 1)) {
+			for (i in 1...(_segmentsW + 1)) {
 				a = ((_segmentsW + 1)*j + i)*3;
 				b = ((_segmentsW + 1)*j + i - 1)*3;
 				c = ((_segmentsW + 1)*(j - 1) + i - 1)*3;
