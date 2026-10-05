@@ -26,10 +26,10 @@ class WireframePlane extends WireframePrimitiveBase
 	
 	/**
 	 * Creates a new WireframePlane object.
-	 * @param width The size of the cube along its X-axis.
-	 * @param height The size of the cube along its Y-axis.
-	 * @param segmentsW The number of segments that make up the cube along the X-axis.
-	 * @param segmentsH The number of segments that make up the cube along the Y-axis.
+	 * @param width The size of the plane along its X-axis.
+	 * @param height The size of the plane along its Y-axis.
+	 * @param segmentsW The number of segments that make up the plane along the X-axis.
+	 * @param segmentsH The number of segments that make up the plane along the Y-axis.
 	 * @param color The colour of the wireframe lines
 	 * @param thickness The thickness of the wireframe lines
 	 * @param orientation The orientaion in which the plane lies.
@@ -61,7 +61,7 @@ class WireframePlane extends WireframePrimitiveBase
 	}
 	
 	/**
-	 * The size of the cube along its X-axis.
+	 * The size of the plane along its X-axis.
 	 */
 	private function get_width():Float
 	{
@@ -76,7 +76,7 @@ class WireframePlane extends WireframePrimitiveBase
 	}
 	
 	/**
-	 * The size of the cube along its Y-axis.
+	 * The size of the plane along its Y-axis.
 	 */
 	private function get_height():Float
 	{
