@@ -298,11 +298,15 @@ class TorusGeometry extends PrimitiveBase
 	
 	/**
 	 * Creates a new <code>Torus</code> object.
-	 * @param radius The radius of the torus.
-	 * @param tubeRadius The radius of the inner tube of the torus.
-	 * @param sectionsR Defines the number of horizontal sections that make up the torus.
-	 * @param sectionsT Defines the number of vertical sections that make up the torus.
-	 * @param yUp Defines whether the torus poles should lay on the Y-axis (true) or on the Z-axis (false).
+	 * @param radius The major radius of the torus.
+	 * @param tubeRadius The minor radius of the torus, or the radius of the
+	 * inner tube.
+	 * @param sectionsR The number of sections the major circumference is
+	 * divided into.
+	 * @param sectionsT The number of sections the minor circumference (the
+	 * circumference of the inner tube) is divided into.
+	 * @param yUp Whether the torus poles should lay on the Y-axis (true) or on
+	 * the Z-axis (false).
 	 */
 	public function new(radius:Float = 50, tubeRadius:Float = 50, sectionsR:Int = 16, sectionsT:Int = 8, yUp:Bool = true)
 	{
