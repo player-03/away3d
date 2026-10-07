@@ -9,15 +9,17 @@ import openfl.Vector;
  */
 class PlaneGeometry extends PrimitiveBase
 {
-	public var segmentsW(get, set):Int;
-	public var segmentsH(get, set):Int;
+	public var sectionsW(get, set):Int;
+	public var sectionsH(get, set):Int;
+	@:noCompletion public var segmentsW(get, set):Int;
+	@:noCompletion public var segmentsH(get, set):Int;
 	public var yUp(get, set):Bool;
 	public var doubleSided(get, set):Bool;
 	public var width(get, set):Float;
 	public var height(get, set):Float;
 	
-	private var _segmentsW:Int;
-	private var _segmentsH:Int;
+	private var _sectionsW:Int;
+	private var _sectionsH:Int;
 	private var _yUp:Bool;
 	private var _width:Float;
 	private var _height:Float;
@@ -27,17 +29,17 @@ class PlaneGeometry extends PrimitiveBase
 	 * Creates a new Plane object.
 	 * @param width The width of the plane.
 	 * @param height The height of the plane.
-	 * @param segmentsW The number of segments that make up the plane along the X-axis.
-	 * @param segmentsH The number of segments that make up the plane along the Y or Z-axis.
+	 * @param sectionsW The number of sections that make up the plane along the X-axis.
+	 * @param sectionsH The number of sections that make up the plane along the Y or Z-axis.
 	 * @param yUp Defines whether the normal vector of the plane should point along the Y-axis (true) or Z-axis (false).
 	 * @param doubleSided Defines whether the plane will be visible from both sides, with correct vertex normals.
 	 */
-	public function new(width:Float = 100, height:Float = 100, segmentsW:Int = 1, segmentsH:Int = 1, yUp:Bool = true, doubleSided:Bool = false)
+	public function new(width:Float = 100, height:Float = 100, sectionsW:Int = 1, sectionsH:Int = 1, yUp:Bool = true, doubleSided:Bool = false)
 	{
 		super();
 		
-		_segmentsW = segmentsW;
-		_segmentsH = segmentsH;
+		_sectionsW = sectionsW;
+		_sectionsH = sectionsH;
 		_yUp = yUp;
 		_width = width;
 		_height = height;
@@ -45,36 +47,56 @@ class PlaneGeometry extends PrimitiveBase
 	}
 	
 	/**
-	 * The number of segments that make up the plane along the X-axis. Defaults to 1.
+	 * The number of sections that make up the plane along the X-axis. Defaults to 1.
 	 */
+	private function get_sectionsW():Int
+	{
+		return _sectionsW;
+	}
+	
+	private function set_sectionsW(value:Int):Int
+	{
+		_sectionsW = value;
+		invalidateGeometry();
+		invalidateUVs();
+		return value;
+	}
+	
 	private function get_segmentsW():Int
 	{
-		return _segmentsW;
+		return sectionsW;
 	}
 	
 	private function set_segmentsW(value:Int):Int
 	{
-		_segmentsW = value;
+		return sectionsW = value;
+	}
+	
+	/**
+	 * The number of sections that make up the plane along the Y or Z-axis, depending on whether yUp is true or
+	 * false, respectively. Defaults to 1.
+	 */
+	private function get_sectionsH():Int
+	{
+		return _sectionsH;
+	}
+	
+	private function set_sectionsH(value:Int):Int
+	{
+		_sectionsH = value;
 		invalidateGeometry();
 		invalidateUVs();
 		return value;
 	}
 	
-	/**
-	 * The number of segments that make up the plane along the Y or Z-axis, depending on whether yUp is true or
-	 * false, respectively. Defaults to 1.
-	 */
 	private function get_segmentsH():Int
 	{
-		return _segmentsH;
+		return sectionsH;
 	}
 	
 	private function set_segmentsH(value:Int):Int
 	{
-		_segmentsH = value;
-		invalidateGeometry();
-		invalidateUVs();
-		return value;
+		return sectionsH = value;
 	}
 	
 	/**
@@ -147,14 +169,14 @@ class PlaneGeometry extends PrimitiveBase
 		var x:Float, y:Float;
 		var numIndices:Int;
 		var base:Int;
-		var tw:Int = _segmentsW + 1;
-		var numVertices:Int = (_segmentsH + 1)*tw;
+		var tw:Int = _sectionsW + 1;
+		var numVertices:Int = (_sectionsH + 1)*tw;
 		var stride:Int = target.vertexStride;
 		var skip:Int = stride - 9;
 		if (_doubleSided)
 			numVertices *= 2;
 		
-		numIndices = _segmentsH*_segmentsW*6;
+		numIndices = _sectionsH*_sectionsW*6;
 		if (_doubleSided)
 			numIndices <<= 1;
 		
@@ -171,10 +193,10 @@ class PlaneGeometry extends PrimitiveBase
 		
 		numIndices = 0;
 		var index:Int = target.vertexOffset;
-		for (yi in 0..._segmentsH + 1) {
-			for (xi in 0..._segmentsW + 1) {
-				x = (xi/_segmentsW - .5)*_width;
-				y = (yi/_segmentsH - .5)*_height;
+		for (yi in 0..._sectionsH + 1) {
+			for (xi in 0..._sectionsW + 1) {
+				x = (xi/_sectionsW - .5)*_width;
+				y = (yi/_sectionsH - .5)*_height;
 				
 				data[index++] = x;
 				if (_yUp) {
@@ -217,7 +239,7 @@ class PlaneGeometry extends PrimitiveBase
 					index += skip;
 				}
 				
-				if (xi != _segmentsW && yi != _segmentsH) {
+				if (xi != _sectionsW && yi != _sectionsH) {
 					base = xi + yi*tw;
 					var mult:Int = _doubleSided? 2 : 1;
 					
@@ -251,7 +273,7 @@ class PlaneGeometry extends PrimitiveBase
 	{
 		var data:Vector<Float>;
 		var stride:Int = target.UVStride;
-		var numUvs:Int = (_segmentsH + 1)*(_segmentsW + 1)*stride;
+		var numUvs:Int = (_sectionsH + 1)*(_sectionsW + 1)*stride;
 		var skip:Int = stride - 2;
 		
 		if (_doubleSided)
@@ -266,15 +288,15 @@ class PlaneGeometry extends PrimitiveBase
 		
 		var index:Int = target.UVOffset;
 		
-		for (yi in 0..._segmentsH + 1) {
-			for (xi in 0..._segmentsW + 1) {
-				data[index++] = (xi/_segmentsW)*target.scaleU;
-				data[index++] = (1 - yi/_segmentsH)*target.scaleV;
+		for (yi in 0..._sectionsH + 1) {
+			for (xi in 0..._sectionsW + 1) {
+				data[index++] = (xi/_sectionsW)*target.scaleU;
+				data[index++] = (1 - yi/_sectionsH)*target.scaleV;
 				index += skip;
 				
 				if (_doubleSided) {
-					data[index++] = (xi/_segmentsW)*target.scaleU;
-					data[index++] = (1 - yi/_segmentsH)*target.scaleV;
+					data[index++] = (xi/_sectionsW)*target.scaleU;
+					data[index++] = (1 - yi/_sectionsH)*target.scaleV;
 					index += skip;
 				}
 			}

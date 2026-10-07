@@ -11,14 +11,16 @@ class TorusGeometry extends PrimitiveBase
 {
 	public var radius(get, set):Float;
 	public var tubeRadius(get, set):Float;
-	public var segmentsR(get, set):Int;
-	public var segmentsT(get, set):Int;
+	public var sectionsR(get, set):Int;
+	public var sectionsT(get, set):Int;
+	@:noCompletion public var segmentsR(get, set):Int;
+	@:noCompletion public var segmentsT(get, set):Int;
 	public var yUp(get, set):Bool;
 	
 	private var _radius:Float;
 	private var _tubeRadius:Float;
-	private var _segmentsR:Int;
-	private var _segmentsT:Int;
+	private var _sectionsR:Int;
+	private var _sectionsT:Int;
 	private var _yUp:Bool;
 	private var _rawVertexData:Vector<Float>;
 	private var _rawIndices:Vector<UInt>;
@@ -69,8 +71,8 @@ class TorusGeometry extends PrimitiveBase
 		_vertexOffset = target.vertexOffset;
 		
 		// evaluate target number of vertices, triangles and indices
-		_numVertices = (_segmentsT + 1)*(_segmentsR + 1); // segmentsT + 1 because of closure, segmentsR + 1 because of closure
-		numTriangles = _segmentsT*_segmentsR*2; // each level has segmentR quads, each of 2 triangles
+		_numVertices = (_sectionsT + 1)*(_sectionsR + 1); // sectionsT + 1 because of closure, sectionsR + 1 because of closure
+		numTriangles = _sectionsT*_sectionsR*2; // each level has segmentR quads, each of 2 triangles
 		
 		// need to initialize raw arrays or can be reused?
 		if (_numVertices == target.numVertices) {
@@ -86,8 +88,8 @@ class TorusGeometry extends PrimitiveBase
 		}
 		
 		// evaluate revolution steps
-		var revolutionAngleDeltaR:Float = 2*Math.PI/_segmentsR;
-		var revolutionAngleDeltaT:Float = 2*Math.PI/_segmentsT;
+		var revolutionAngleDeltaR:Float = 2*Math.PI/_sectionsR;
+		var revolutionAngleDeltaT:Float = 2*Math.PI/_sectionsT;
 		
 		var comp1:Float, comp2:Float;
 		var t1:Float, t2:Float, n1:Float, n2:Float;
@@ -96,11 +98,11 @@ class TorusGeometry extends PrimitiveBase
 		// surface
 		var a:Int, b:Int, c:Int, d:Int, length:Float;
 		
-		for (j in 0..._segmentsT + 1) {
+		for (j in 0..._sectionsT + 1) {
 			
 			startIndex = _vertexOffset + _nextVertexIndex*_vertexStride;
 			
-			for (i in 0..._segmentsR + 1) {
+			for (i in 0..._sectionsR + 1) {
 				// revolution vertex
 				revolutionAngleR = i*revolutionAngleDeltaR;
 				revolutionAngleT = j*revolutionAngleDeltaT;
@@ -112,7 +114,7 @@ class TorusGeometry extends PrimitiveBase
 				
 				x = _radius*Math.cos(revolutionAngleR) + _tubeRadius*nx;
 				y = _radius*Math.sin(revolutionAngleR) + _tubeRadius*ny;
-				z = (j == _segmentsT)? 0 : _tubeRadius*nz;
+				z = (j == _sectionsT)? 0 : _tubeRadius*nz;
 				
 				if (_yUp) {
 					n1 = -nz;
@@ -131,7 +133,7 @@ class TorusGeometry extends PrimitiveBase
 					comp2 = z;
 				}
 				
-				if (i == _segmentsR) {
+				if (i == _sectionsR) {
 					addVertex(x, _rawVertexData[startIndex + 1], _rawVertexData[startIndex + 2],
 						nx, n1, n2,
 						-((length != 0)? ny/length : y/_radius), t1, t2);
@@ -145,8 +147,8 @@ class TorusGeometry extends PrimitiveBase
 				if (i > 0 && j > 0) {
 					a = _nextVertexIndex - 1; // current
 					b = _nextVertexIndex - 2; // previous
-					c = b - _segmentsR - 1; // previous of last level
-					d = a - _segmentsR - 1; // current of last level
+					c = b - _sectionsR - 1; // previous of last level
+					d = a - _sectionsR - 1; // current of last level
 					addTriangleClockWise(a, b, c);
 					addTriangleClockWise(a, c, d);
 				}
@@ -184,11 +186,11 @@ class TorusGeometry extends PrimitiveBase
 		var currentUvCompIndex:Int = offset;
 		
 		// surface
-		for (j in 0..._segmentsT + 1) {
-			for (i in 0..._segmentsR + 1) {
+		for (j in 0..._sectionsT + 1) {
+			for (i in 0..._sectionsR + 1) {
 				// revolution vertex
-				data[currentUvCompIndex++] = ( i/_segmentsR )*target.scaleU;
-				data[currentUvCompIndex++] = ( j/_segmentsT )*target.scaleV;
+				data[currentUvCompIndex++] = ( i/_sectionsR )*target.scaleU;
+				data[currentUvCompIndex++] = ( j/_sectionsT )*target.scaleV;
 				currentUvCompIndex += skip;
 			}
 		}
@@ -228,35 +230,55 @@ class TorusGeometry extends PrimitiveBase
 	}
 	
 	/**
-	 * Defines the number of horizontal segments that make up the torus. Defaults to 16.
+	 * Defines the number of horizontal sections that make up the torus. Defaults to 16.
 	 */
+	private function get_sectionsR():Int
+	{
+		return _sectionsR;
+	}
+	
+	private function set_sectionsR(value:Int):Int
+	{
+		_sectionsR = value;
+		invalidateGeometry();
+		invalidateUVs();
+		return value;
+	}
+	
 	private function get_segmentsR():Int
 	{
-		return _segmentsR;
+		return sectionsR;
 	}
 	
 	private function set_segmentsR(value:Int):Int
 	{
-		_segmentsR = value;
+		return sectionsR = value;
+	}
+	
+	/**
+	 * Defines the number of vertical sections that make up the torus. Defaults to 8.
+	 */
+	private function get_sectionsT():Int
+	{
+		return _sectionsT;
+	}
+	
+	private function set_sectionsT(value:Int):Int
+	{
+		_sectionsT = value;
 		invalidateGeometry();
 		invalidateUVs();
 		return value;
 	}
 	
-	/**
-	 * Defines the number of vertical segments that make up the torus. Defaults to 8.
-	 */
 	private function get_segmentsT():Int
 	{
-		return _segmentsT;
+		return sectionsT;
 	}
 	
 	private function set_segmentsT(value:Int):Int
 	{
-		_segmentsT = value;
-		invalidateGeometry();
-		invalidateUVs();
-		return value;
+		return sectionsT = value;
 	}
 	
 	/**
@@ -278,18 +300,18 @@ class TorusGeometry extends PrimitiveBase
 	 * Creates a new <code>Torus</code> object.
 	 * @param radius The radius of the torus.
 	 * @param tuebRadius The radius of the inner tube of the torus.
-	 * @param segmentsR Defines the number of horizontal segments that make up the torus.
-	 * @param segmentsT Defines the number of vertical segments that make up the torus.
+	 * @param sectionsR Defines the number of horizontal sections that make up the torus.
+	 * @param sectionsT Defines the number of vertical sections that make up the torus.
 	 * @param yUp Defines whether the torus poles should lay on the Y-axis (true) or on the Z-axis (false).
 	 */
-	public function new(radius:Float = 50, tubeRadius:Float = 50, segmentsR:Int = 16, segmentsT:Int = 8, yUp:Bool = true)
+	public function new(radius:Float = 50, tubeRadius:Float = 50, sectionsR:Int = 16, sectionsT:Int = 8, yUp:Bool = true)
 	{
 		super();
 		
 		_radius = radius;
 		_tubeRadius = tubeRadius;
-		_segmentsR = segmentsR;
-		_segmentsT = segmentsT;
+		_sectionsR = sectionsR;
+		_sectionsT = sectionsT;
 		_yUp = yUp;
 	}
 }
