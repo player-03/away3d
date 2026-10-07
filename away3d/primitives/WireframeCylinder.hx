@@ -18,27 +18,27 @@ class WireframeCylinder extends WireframePrimitiveBase
 	private var _topRadius:Float;
 	private var _bottomRadius:Float;
 	private var _height:Float;
-	private var _segmentsW:Int;
-	private var _segmentsH:Int;
+	private var _sectionsW:Int;
+	private var _sectionsH:Int;
 	
 	/**
 	 * Creates a new WireframeCylinder instance
 	 * @param topRadius Top radius of the cylinder
 	 * @param bottomRadius Bottom radius of the cylinder
 	 * @param height The height of the cylinder
-	 * @param segmentsW Number of radial segments
-	 * @param segmentsH Number of vertical segments
+	 * @param sectionsW Number of radial sections
+	 * @param sectionsH Number of vertical sections
 	 * @param color The color of the wireframe lines
 	 * @param thickness The thickness of the wireframe lines
 	 */
-	public function new(topRadius:Float = 50, bottomRadius:Float = 50, height:Float = 100, segmentsW:Int = 16, segmentsH:Int = 1, color:Int = 0xFFFFFF, thickness:Float = 1)
+	public function new(topRadius:Float = 50, bottomRadius:Float = 50, height:Float = 100, sectionsW:Int = 16, sectionsH:Int = 1, color:Int = 0xFFFFFF, thickness:Float = 1)
 	{
 		super(color, thickness);
 		_topRadius = topRadius;
 		_bottomRadius = bottomRadius;
 		_height = height;
-		_segmentsW = segmentsW;
-		_segmentsH = segmentsH;
+		_sectionsW = sectionsW;
+		_sectionsH = sectionsH;
 	}
 	
 	override private function buildGeometry():Void
@@ -46,20 +46,20 @@ class WireframeCylinder extends WireframePrimitiveBase
 		var i:Int = 0, j:Int;
 		var radius:Float = _topRadius;
 		var revolutionAngle:Float;
-		var revolutionAngleDelta:Float = TWO_PI / _segmentsW;
+		var revolutionAngleDelta:Float = TWO_PI / _sectionsW;
 		var nextVertexIndex:Int = 0;
 		var x:Float = 0, y:Float = 0, z:Float = 0;
-		var lastLayer:Vector<Vector<Vector3D>> = new Vector<Vector<Vector3D>>(_segmentsH + 1, true);
+		var lastLayer:Vector<Vector<Vector3D>> = new Vector<Vector<Vector3D>>(_sectionsH + 1, true);
 		
-		for (j in 0..._segmentsH + 1) {
-			lastLayer[j] = new Vector<Vector3D>(_segmentsW + 1, true);
+		for (j in 0..._sectionsH + 1) {
+			lastLayer[j] = new Vector<Vector3D>(_sectionsW + 1, true);
 			
-			radius = _topRadius - ((j/_segmentsH)*(_topRadius - _bottomRadius));
-			z = -(_height/2) + (j/_segmentsH*_height);
+			radius = _topRadius - ((j/_sectionsH)*(_topRadius - _bottomRadius));
+			z = -(_height/2) + (j/_sectionsH*_height);
 			
 			var previousV:Vector3D = null;
 			
-			for (i in 0..._segmentsW + 1) {
+			for (i in 0..._sectionsW + 1) {
 				// revolution vertex
 				revolutionAngle = i*revolutionAngleDelta;
 				x = radius*Math.cos(revolutionAngle);
