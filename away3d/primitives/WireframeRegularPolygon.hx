@@ -25,7 +25,7 @@ class WireframeRegularPolygon extends WireframePrimitiveBase
 	 * @param sides The number of sides on the polygon.
 	 * @param color The colour of the wireframe lines
 	 * @param thickness The thickness of the wireframe lines
-	 * @param orientation The orientaion in which the plane lies.
+	 * @param orientation The orientation in which the plane lies.
 	 */
 	public function new(radius:Float, sides:Int, color:Int = 0xFFFFFF, thickness:Float = 1, orientation:String = "yz")
 	{
@@ -37,7 +37,7 @@ class WireframeRegularPolygon extends WireframePrimitiveBase
 	}
 	
 	/**
-	 * The orientaion in which the polygon lies.
+	 * The orientation in which the polygon lies.
 	 */
 	private function get_orientation():String
 	{

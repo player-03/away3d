@@ -32,7 +32,7 @@ class WireframePlane extends WireframePrimitiveBase
 	 * @param sectionsH The number of sections the plane's height is divided into.
 	 * @param color The colour of the wireframe lines
 	 * @param thickness The thickness of the wireframe lines
-	 * @param orientation The orientaion in which the plane lies.
+	 * @param orientation The orientation in which the plane lies.
 	 */
 	public function new(width:Float, height:Float, sectionsW:Int = 10, sectionsH:Int = 10, color:Int = 0xFFFFFF, thickness:Float = 1, orientation:String = "yz")
 	{
@@ -46,7 +46,7 @@ class WireframePlane extends WireframePrimitiveBase
 	}
 	
 	/**
-	 * The orientaion in which the plane lies.
+	 * The orientation in which the plane lies.
 	 */
 	private function get_orientation():String
 	{

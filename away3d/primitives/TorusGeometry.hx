@@ -299,7 +299,7 @@ class TorusGeometry extends PrimitiveBase
 	/**
 	 * Creates a new <code>Torus</code> object.
 	 * @param radius The radius of the torus.
-	 * @param tuebRadius The radius of the inner tube of the torus.
+	 * @param tubeRadius The radius of the inner tube of the torus.
 	 * @param sectionsR Defines the number of horizontal sections that make up the torus.
 	 * @param sectionsT Defines the number of vertical sections that make up the torus.
 	 * @param yUp Defines whether the torus poles should lay on the Y-axis (true) or on the Z-axis (false).

@@ -25,7 +25,7 @@ class WireframeTetrahedron extends WireframePrimitiveBase
 	/**
 	 * Creates a new WireframeTetrahedron object.
 	 * @param width The size of the tetrahedron buttom size.
-	 * @param height The size of the tetranhedron height.
+	 * @param height The size of the tetrahedron height.
 	 * @param color The color of the wireframe lines.
 	 * @param thickness The thickness of the wireframe lines.
 	 */
