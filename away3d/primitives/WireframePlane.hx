@@ -28,8 +28,8 @@ class WireframePlane extends WireframePrimitiveBase
 	 * Creates a new WireframePlane object.
 	 * @param width The size of the plane along its X-axis.
 	 * @param height The size of the plane along its Y-axis.
-	 * @param sectionsW The number of sections that make up the plane along the X-axis.
-	 * @param sectionsH The number of sections that make up the plane along the Y-axis.
+	 * @param sectionsW The number of sections the plane's width is divided into.
+	 * @param sectionsH The number of sections the plane's height is divided into.
 	 * @param color The colour of the wireframe lines
 	 * @param thickness The thickness of the wireframe lines
 	 * @param orientation The orientaion in which the plane lies.
