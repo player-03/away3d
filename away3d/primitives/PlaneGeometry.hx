@@ -28,9 +28,9 @@ class PlaneGeometry extends PrimitiveBase
 	/**
 	 * Creates a new Plane object.
 	 * @param width The width of the plane.
-	 * @param height The height of the plane.
-	 * @param sectionsW The number of sections that make up the plane along the X-axis.
-	 * @param sectionsH The number of sections that make up the plane along the Y or Z-axis.
+	 * @param height The height of the plane, along the Y or Z-axis.
+	 * @param sectionsW The number of sections the plane's width is divided into.
+	 * @param sectionsH The number of sections the plane's height is divided into.
 	 * @param yUp Defines whether the normal vector of the plane should point along the Y-axis (true) or Z-axis (false).
 	 * @param doubleSided Defines whether the plane will be visible from both sides, with correct vertex normals.
 	 */
