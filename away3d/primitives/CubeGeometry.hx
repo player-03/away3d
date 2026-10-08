@@ -34,10 +34,12 @@ class CubeGeometry extends PrimitiveBase
 	 * @param width The size of the cube along its X-axis.
 	 * @param height The size of the cube along its Y-axis.
 	 * @param depth The size of the cube along its Z-axis.
-	 * @param sectionsW The number of sections that make up the cube along the X-axis.
-	 * @param sectionsH The number of sections that make up the cube along the Y-axis.
-	 * @param sectionsD The number of sections that make up the cube along the Z-axis.
-	 * @param tile6 The type of uv mapping to use. When true, a texture will be subdivided in a 2x3 grid, each used for a single face. When false, the entire image is mapped on each face.
+	 * @param sectionsW The number of sections the cube's width is divided into.
+	 * @param sectionsH The number of sections the cube's height is divided into.
+	 * @param sectionsD The number of sections the cube's depth is divided into.
+	 * @param tile6 The type of uv mapping to use. When true, a texture will be
+	 * subdivided in a 2x3 grid, each used for a single face. When false, the
+	 * entire image is mapped on each face.
 	 */
 	public function new(width:Float = 100, height:Float = 100, depth:Float = 100, sectionsW:Int = 1, sectionsH:Int = 1, sectionsD:Int = 1, tile6:Bool = true)
 	{
