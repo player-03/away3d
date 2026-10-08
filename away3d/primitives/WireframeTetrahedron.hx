@@ -6,7 +6,8 @@ import openfl.errors.Error;
 import openfl.geom.Vector3D;
 
 /**
- * A WireframeTetrahedron primitive mesh
+ * A WireframeTetrahedron primitive mesh. This is a square pyramid, rather than
+ * a true tetrahedron.
  */
 class WireframeTetrahedron extends WireframePrimitiveBase
 {
