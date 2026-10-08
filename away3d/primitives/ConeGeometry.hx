@@ -5,11 +5,11 @@ package away3d.primitives;
  */
 class ConeGeometry extends CylinderGeometry
 {
-	public var radius(get, set):Float;
-	
 	/**
 	 * The radius of the bottom end of the cone.
 	 */
+	public var radius(get, set):Float;
+	
 	private function get_radius():Float
 	{
 		return _bottomRadius;

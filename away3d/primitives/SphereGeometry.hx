@@ -9,11 +9,23 @@ import openfl.Vector;
  */
 class SphereGeometry extends PrimitiveBase
 {
+	/**
+	 * The radius of the sphere.
+	 */
 	public var radius(get, set):Float;
+	/**
+	 * The number of sections the sphere is divided into, around its equator.
+	 */
 	public var sectionsC(get, set):Int;
+	/**
+	 * The number of sections the sphere's height is divided into, from pole to pole.
+	 */
 	public var sectionsH(get, set):Int;
 	@:noCompletion public var segmentsW(get, set):Int;
 	@:noCompletion public var segmentsH(get, set):Int;
+	/**
+	 * Whether the sphere poles should lay on the Y-axis (true) or on the Z-axis (false).
+	 */
 	public var yUp(get, set):Bool;
 	
 	private var _radius:Float;
@@ -187,9 +199,6 @@ class SphereGeometry extends PrimitiveBase
 		target.updateData(data);
 	}
 	
-	/**
-	 * The radius of the sphere.
-	 */
 	private function get_radius():Float
 	{
 		return _radius;
@@ -202,9 +211,6 @@ class SphereGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * Defines the number of horizontal sections that make up the sphere. Defaults to 16.
-	 */
 	private function get_sectionsC():Int
 	{
 		return _sectionsC;
@@ -228,9 +234,6 @@ class SphereGeometry extends PrimitiveBase
 		return sectionsC = value;
 	}
 	
-	/**
-	 * Defines the number of vertical sections that make up the sphere. Defaults to 12.
-	 */
 	private function get_sectionsH():Int
 	{
 		return _sectionsH;
@@ -254,9 +257,6 @@ class SphereGeometry extends PrimitiveBase
 		return sectionsH = value;
 	}
 	
-	/**
-	 * Defines whether the sphere poles should lay on the Y-axis (true) or on the Z-axis (false).
-	 */
 	private function get_yUp():Bool
 	{
 		return _yUp;

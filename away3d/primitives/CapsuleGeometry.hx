@@ -9,12 +9,27 @@ import openfl.Vector;
  */
 class CapsuleGeometry extends PrimitiveBase
 {
+	/**
+	 * The radius of the capsule.
+	 */
 	public var radius(get, set):Float;
+	/**
+	 * The height of the capsule.
+	 */
 	public var height(get, set):Float;
+	/**
+	 * The number of sections the circumference is divided into. Defaults to 16.
+	 */
 	public var sectionsC(get, set):Int;
+	/**
+	 * The number of sections the height is divided into. Defaults to 15. Must be uneven.
+	 */
 	public var sectionsH(get, set):Int;
 	@:noCompletion public var segmentsW(get, set):Int;
 	@:noCompletion public var segmentsH(get, set):Int;
+	/**
+	 * Whether the capsule poles should lay on the Y-axis (true) or on the Z-axis (false).
+	 */
 	public var yUp(get, set):Bool;
 	
 	private var _radius:Float;
@@ -195,9 +210,6 @@ class CapsuleGeometry extends PrimitiveBase
 		target.updateData(data);
 	}
 	
-	/**
-	 * The radius of the capsule.
-	 */
 	private function get_radius():Float
 	{
 		return _radius;
@@ -210,9 +222,6 @@ class CapsuleGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The height of the capsule.
-	 */
 	private function get_height():Float
 	{
 		return _height;
@@ -225,9 +234,6 @@ class CapsuleGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * Defines the number of horizontal sections that make up the capsule. Defaults to 16.
-	 */
 	private function get_sectionsC():Int
 	{
 		return _sectionsC;
@@ -251,9 +257,6 @@ class CapsuleGeometry extends PrimitiveBase
 		return sectionsC = value;
 	}
 	
-	/**
-	 * Defines the number of vertical sections that make up the capsule. Defaults to 15. Must be uneven.
-	 */
 	private function get_sectionsH():Int
 	{
 		return _sectionsH;
@@ -277,9 +280,6 @@ class CapsuleGeometry extends PrimitiveBase
 		return sectionsH = value;
 	}
 	
-	/**
-	 * Defines whether the capsule poles should lay on the Y-axis (true) or on the Z-axis (false).
-	 */
 	private function get_yUp():Bool
 	{
 		return _yUp;

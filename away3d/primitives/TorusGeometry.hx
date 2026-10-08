@@ -9,12 +9,28 @@ import openfl.Vector;
  */
 class TorusGeometry extends PrimitiveBase
 {
+	/**
+	 * The major radius of the torus.
+	 */
 	public var radius(get, set):Float;
+	/**
+	 * The minor radius of the torus, or the radius of the inner tube.
+	 */
 	public var tubeRadius(get, set):Float;
+	/**
+	 * The number of sections the major circumference is divided into.
+	 */
 	public var sectionsR(get, set):Int;
+	/**
+	 * The number of sections the minor circumference (the circumference of the
+	 * inner tube) is divided into.
+	 */
 	public var sectionsT(get, set):Int;
 	@:noCompletion public var segmentsR(get, set):Int;
 	@:noCompletion public var segmentsT(get, set):Int;
+	/**
+	 * Whether the torus poles should lay on the Y-axis (true) or on the Z-axis (false).
+	 */
 	public var yUp(get, set):Bool;
 	
 	private var _radius:Float;
@@ -199,9 +215,6 @@ class TorusGeometry extends PrimitiveBase
 		target.updateData(data);
 	}
 	
-	/**
-	 * The radius of the torus.
-	 */
 	private function get_radius():Float
 	{
 		return _radius;
@@ -214,9 +227,6 @@ class TorusGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The radius of the inner tube of the torus.
-	 */
 	private function get_tubeRadius():Float
 	{
 		return _tubeRadius;
@@ -229,9 +239,6 @@ class TorusGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * Defines the number of horizontal sections that make up the torus. Defaults to 16.
-	 */
 	private function get_sectionsR():Int
 	{
 		return _sectionsR;
@@ -255,9 +262,6 @@ class TorusGeometry extends PrimitiveBase
 		return sectionsR = value;
 	}
 	
-	/**
-	 * Defines the number of vertical sections that make up the torus. Defaults to 8.
-	 */
 	private function get_sectionsT():Int
 	{
 		return _sectionsT;
@@ -281,9 +285,6 @@ class TorusGeometry extends PrimitiveBase
 		return sectionsT = value;
 	}
 	
-	/**
-	 * Defines whether the torus poles should lay on the Y-axis (true) or on the Z-axis (false).
-	 */
 	private function get_yUp():Bool
 	{
 		return _yUp;

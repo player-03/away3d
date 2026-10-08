@@ -9,13 +9,31 @@ import openfl.Vector;
  */
 class PlaneGeometry extends PrimitiveBase
 {
+	/**
+	 * The number of sections the plane's width is divided into.
+	 */
 	public var sectionsW(get, set):Int;
+	/**
+	 * The number of sections the plane's height is divided into.
+	 */
 	public var sectionsH(get, set):Int;
 	@:noCompletion public var segmentsW(get, set):Int;
 	@:noCompletion public var segmentsH(get, set):Int;
+	/**
+	 * Defines whether the normal vector of the plane should point along the Y-axis (true) or Z-axis (false). Defaults to true.
+	 */
 	public var yUp(get, set):Bool;
+	/**
+	 * Defines whether the plane will be visible from both sides, with correct vertex normals (as opposed to bothSides on Material). Defaults to false.
+	 */
 	public var doubleSided(get, set):Bool;
+	/**
+	 * The width of the plane.
+	 */
 	public var width(get, set):Float;
+	/**
+	 * The height of the plane, along the Y or Z-axis.
+	 */
 	public var height(get, set):Float;
 	
 	private var _sectionsW:Int;
@@ -46,9 +64,6 @@ class PlaneGeometry extends PrimitiveBase
 		_doubleSided = doubleSided;
 	}
 	
-	/**
-	 * The number of sections that make up the plane along the X-axis. Defaults to 1.
-	 */
 	private function get_sectionsW():Int
 	{
 		return _sectionsW;
@@ -72,10 +87,6 @@ class PlaneGeometry extends PrimitiveBase
 		return sectionsW = value;
 	}
 	
-	/**
-	 * The number of sections that make up the plane along the Y or Z-axis, depending on whether yUp is true or
-	 * false, respectively. Defaults to 1.
-	 */
 	private function get_sectionsH():Int
 	{
 		return _sectionsH;
@@ -99,9 +110,6 @@ class PlaneGeometry extends PrimitiveBase
 		return sectionsH = value;
 	}
 	
-	/**
-	 *  Defines whether the normal vector of the plane should point along the Y-axis (true) or Z-axis (false). Defaults to true.
-	 */
 	private function get_yUp():Bool
 	{
 		return _yUp;
@@ -114,9 +122,6 @@ class PlaneGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * Defines whether the plane will be visible from both sides, with correct vertex normals (as opposed to bothSides on Material). Defaults to false.
-	 */
 	private function get_doubleSided():Bool
 	{
 		return _doubleSided;
@@ -129,9 +134,6 @@ class PlaneGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The width of the plane.
-	 */
 	private function get_width():Float
 	{
 		return _width;
@@ -144,9 +146,6 @@ class PlaneGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The height of the plane.
-	 */
 	private function get_height():Float
 	{
 		return _height;

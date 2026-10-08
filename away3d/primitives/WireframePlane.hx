@@ -8,10 +8,25 @@ import openfl.geom.Vector3D;
  */
 class WireframePlane extends WireframePrimitiveBase
 {
+	/**
+	 * The orientation in which the plane lies.
+	 */
 	public var orientation(get, set):String;
+	/**
+	 * The size of the plane along its X-axis.
+	 */
 	public var width(get, set):Float;
+	/**
+	 * The size of the plane along its Y-axis.
+	 */
 	public var height(get, set):Float;
+	/**
+	 * The number of sections the plane's width is divided into.
+	 */
 	public var sectionsW(get, set):Int;
+	/**
+	 * The number of sections the plane's height is divided into.
+	 */
 	public var sectionsH(get, set):Int;
 	
 	public static inline var ORIENTATION_YZ:String = "yz";
@@ -45,9 +60,6 @@ class WireframePlane extends WireframePrimitiveBase
 		_orientation = orientation;
 	}
 	
-	/**
-	 * The orientation in which the plane lies.
-	 */
 	private function get_orientation():String
 	{
 		return _orientation;
@@ -60,9 +72,6 @@ class WireframePlane extends WireframePrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The size of the plane along its X-axis.
-	 */
 	private function get_width():Float
 	{
 		return _width;
@@ -75,9 +84,6 @@ class WireframePlane extends WireframePrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The size of the plane along its Y-axis.
-	 */
 	private function get_height():Float
 	{
 		return _height;
@@ -92,9 +98,6 @@ class WireframePlane extends WireframePrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The number of sections that make up the plane along the X-axis.
-	 */
 	private function get_sectionsW():Int
 	{
 		return _sectionsW;
@@ -108,9 +111,6 @@ class WireframePlane extends WireframePrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The number of sections that make up the plane along the Y-axis.
-	 */
 	private function get_sectionsH():Int
 	{
 		return _sectionsH;

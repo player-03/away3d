@@ -9,15 +9,39 @@ import openfl.Vector;
  */
 class CylinderGeometry extends PrimitiveBase
 {
+	/**
+	 * The radius of the top end of the cylinder.
+	 */
 	public var topRadius(get, set):Float;
+	/**
+	 * The radius of the bottom end of the cylinder.
+	 */
 	public var bottomRadius(get, set):Float;
+	/**
+	 * The radius of the top end of the cylinder.
+	 */
 	public var height(get, set):Float;
+	/**
+	 * The number of sections the circumference is divided into. Defaults to 16.
+	 */
 	public var sectionsC(get, set):Int;
+	/**
+	 * The number of sections the cylinder's height is divided into. Defaults to 1.
+	 */
 	public var sectionsH(get, set):Int;
 	@:noCompletion public var segmentsW(get, set):Int;
 	@:noCompletion public var segmentsH(get, set):Int;
+	/**
+	 * Defines whether the top end of the cylinder is closed (true) or open.
+	 */
 	public var topClosed(get, set):Bool;
+	/**
+	 * Defines whether the bottom end of the cylinder is closed (true) or open.
+	 */
 	public var bottomClosed(get, set):Bool;
+	/**
+	 * Defines whether the cylinder poles should lay on the Y-axis (true) or on the Z-axis (false).
+	 */
 	public var yUp(get, set):Bool;
 	
 	private var _topRadius:Float;
@@ -354,9 +378,6 @@ class CylinderGeometry extends PrimitiveBase
 		target.updateData(UVData);
 	}
 	
-	/**
-	 * The radius of the top end of the cylinder.
-	 */
 	private function get_topRadius():Float
 	{
 		return _topRadius;
@@ -369,9 +390,6 @@ class CylinderGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The radius of the bottom end of the cylinder.
-	 */
 	private function get_bottomRadius():Float
 	{
 		return _bottomRadius;
@@ -384,9 +402,6 @@ class CylinderGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The radius of the top end of the cylinder.
-	 */
 	private function get_height():Float
 	{
 		return _height;
@@ -399,9 +414,6 @@ class CylinderGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * Defines the number of horizontal sections that make up the cylinder. Defaults to 16.
-	 */
 	private function get_sectionsC():Int
 	{
 		return _sectionsC;
@@ -425,9 +437,6 @@ class CylinderGeometry extends PrimitiveBase
 		return sectionsC = value;
 	}
 	
-	/**
-	 * Defines the number of vertical sections that make up the cylinder. Defaults to 1.
-	 */
 	private function get_sectionsH():Int
 	{
 		return _sectionsH;
@@ -451,9 +460,6 @@ class CylinderGeometry extends PrimitiveBase
 		return sectionsH = value;
 	}
 	
-	/**
-	 * Defines whether the top end of the cylinder is closed (true) or open.
-	 */
 	private function get_topClosed():Bool
 	{
 		return _topClosed;
@@ -466,9 +472,6 @@ class CylinderGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * Defines whether the bottom end of the cylinder is closed (true) or open.
-	 */
 	private function get_bottomClosed():Bool
 	{
 		return _bottomClosed;
@@ -481,9 +484,6 @@ class CylinderGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * Defines whether the cylinder poles should lay on the Y-axis (true) or on the Z-axis (false).
-	 */
 	private function get_yUp():Bool
 	{
 		return _yUp;

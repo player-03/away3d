@@ -9,8 +9,17 @@ import openfl.Vector;
  */
 class WireframeCylinder extends WireframePrimitiveBase
 {
+	/**
+	 * Top radius of the cylinder
+	 */
 	public var topRadius(get, set):Float;
+	/**
+	 * Bottom radius of the cylinder
+	 */
 	public var bottomRadius(get, set):Float;
+	/**
+	 * The height of the cylinder
+	 */
 	public var height(get, set):Float;
 	
 	private static var TWO_PI:Float = 2*Math.PI;
@@ -80,9 +89,6 @@ class WireframeCylinder extends WireframePrimitiveBase
 		}
 	}
 	
-	/**
-	 * Top radius of the cylinder
-	 */
 	private function get_topRadius():Float
 	{
 		return _topRadius;
@@ -97,9 +103,6 @@ class WireframeCylinder extends WireframePrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * Bottom radius of the cylinder
-	 */
 	private function get_bottomRadius():Float
 	{
 		return _bottomRadius;
@@ -114,9 +117,6 @@ class WireframeCylinder extends WireframePrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The height of the cylinder
-	 */
 	private function get_height():Float
 	{
 		return _height;

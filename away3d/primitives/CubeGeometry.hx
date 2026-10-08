@@ -9,12 +9,38 @@ import openfl.Vector;
  */
 class CubeGeometry extends PrimitiveBase
 {
+	/**
+	 * The size of the cube along its X-axis.
+	 */
 	public var width(get, set):Float;
+	/**
+	 * The size of the cube along its Y-axis.
+	 */
 	public var height(get, set):Float;
+	/**
+	 * The size of the cube along its Z-axis.
+	 */
 	public var depth(get, set):Float;
+	/**
+	 * The type of uv mapping to use. When false, the entire image is mapped on each face.
+	 * When true, a texture will be subdivided in a 3x2 grid, each used for a single face.
+	 * Reading the tiles from left to right, top to bottom they represent the faces of the
+	 * cube in the following order: bottom, top, back, left, front, right. This creates
+	 * several shared edges (between the top, front, left and right faces) which simplifies
+	 * texture painting.
+	 */
 	public var tile6(get, set):Bool;
+	/**
+	 * The number of sections the cube's width is divided into. Defaults to 1.
+	 */
 	public var sectionsW(get, set):Int;
+	/**
+	 * The number of sections the cube's height is divided into. Defaults to 1.
+	 */
 	public var sectionsH(get, set):Int;
+	/**
+	 * The number of sections the cube's depth is divided into. Defaults to 1.
+	 */
 	public var sectionsD(get, set):Int;
 	@:noCompletion public var segmentsW(get, set):Int;
 	@:noCompletion public var segmentsH(get, set):Int;
@@ -54,9 +80,6 @@ class CubeGeometry extends PrimitiveBase
 		_tile6 = tile6;
 	}
 	
-	/**
-	 * The size of the cube along its X-axis.
-	 */
 	private function get_width():Float
 	{
 		return _width;
@@ -69,9 +92,6 @@ class CubeGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The size of the cube along its Y-axis.
-	 */
 	private function get_height():Float
 	{
 		return _height;
@@ -84,9 +104,6 @@ class CubeGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The size of the cube along its Z-axis.
-	 */
 	private function get_depth():Float
 	{
 		return _depth;
@@ -99,14 +116,6 @@ class CubeGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The type of uv mapping to use. When false, the entire image is mapped on each face.
-	 * When true, a texture will be subdivided in a 3x2 grid, each used for a single face.
-	 * Reading the tiles from left to right, top to bottom they represent the faces of the
-	 * cube in the following order: bottom, top, back, left, front, right. This creates
-	 * several shared edges (between the top, front, left and right faces) which simplifies
-	 * texture painting.
-	 */
 	private function get_tile6():Bool
 	{
 		return _tile6;
@@ -119,9 +128,6 @@ class CubeGeometry extends PrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The number of sections that make up the cube along the X-axis. Defaults to 1.
-	 */
 	private function get_sectionsW():Int
 	{
 		return _sectionsW;
@@ -145,9 +151,6 @@ class CubeGeometry extends PrimitiveBase
 		return sectionsW = value;
 	}
 	
-	/**
-	 * The number of sections that make up the cube along the Y-axis. Defaults to 1.
-	 */
 	private function get_sectionsH():Int
 	{
 		return _sectionsH;
@@ -171,9 +174,6 @@ class CubeGeometry extends PrimitiveBase
 		return sectionsH = value;
 	}
 	
-	/**
-	 * The number of sections that make up the cube along the Z-axis. Defaults to 1.
-	 */
 	private function get_sectionsD():Int
 	{
 		return _sectionsD;

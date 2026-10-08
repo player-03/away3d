@@ -11,8 +11,17 @@ import openfl.geom.Vector3D;
  */
 class WireframeTetrahedron extends WireframePrimitiveBase
 {
+	/**
+	 * The plane in which the tetrahedron's base lies.
+	 */
 	public var orientation(get, set):String;
+	/**
+	 * The size of the tetrahedron's square base.
+	 */
 	public var width(get, set):Float;
+	/**
+	 * The tetrahedron's height.
+	 */
 	public var height(get, set):Float;
 	
 	public static inline var ORIENTATION_YZ:String = "yz";
@@ -40,9 +49,6 @@ class WireframeTetrahedron extends WireframePrimitiveBase
 		_orientation = orientation;
 	}
 	
-	/**
-	 * The orientation in which the plane lies
-	 */
 	private function get_orientation():String
 	{
 		return _orientation;
@@ -55,9 +61,6 @@ class WireframeTetrahedron extends WireframePrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The size of the tetrahedron bottom.
-	 */
 	private function get_width():Float
 	{
 		return _width;
@@ -72,9 +75,6 @@ class WireframeTetrahedron extends WireframePrimitiveBase
 		return value;
 	}
 	
-	/**
-	 * The size of the tetrahedron height.
-	 */
 	private function get_height():Float
 	{
 		return _height;
