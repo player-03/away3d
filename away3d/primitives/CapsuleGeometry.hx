@@ -11,7 +11,7 @@ class CapsuleGeometry extends PrimitiveBase
 {
 	public var radius(get, set):Float;
 	public var height(get, set):Float;
-	public var sectionsW(get, set):Int;
+	public var sectionsC(get, set):Int;
 	public var sectionsH(get, set):Int;
 	@:noCompletion public var segmentsW(get, set):Int;
 	@:noCompletion public var segmentsH(get, set):Int;
@@ -19,7 +19,7 @@ class CapsuleGeometry extends PrimitiveBase
 	
 	private var _radius:Float;
 	private var _height:Float;
-	private var _sectionsW:Int;
+	private var _sectionsC:Int;
 	private var _sectionsH:Int;
 	private var _yUp:Bool;
 	
@@ -27,17 +27,20 @@ class CapsuleGeometry extends PrimitiveBase
 	 * Creates a new Capsule object.
 	 * @param radius The radius of the capsule.
 	 * @param height The height of the capsule.
-	 * @param sectionsW Defines the number of horizontal sections that make up the capsule. Defaults to 16.
-	 * @param sectionsH Defines the number of vertical sections that make up the capsule. Defaults to 15. Must be uneven value.
-	 * @param yUp Defines whether the capsule poles should lay on the Y-axis (true) or on the Z-axis (false).
+	 * @param sectionsC The number of sections the circumference is divided
+	 * into. Defaults to 16.
+	 * @param sectionsH The number of sections the height is divided into.
+	 * Defaults to 15. Must be uneven value.
+	 * @param yUp Whether the capsule poles should lay on the Y-axis (true) or
+	 * on the Z-axis (false).
 	 */
-	public function new(radius:Float = 50, height:Float = 100, sectionsW:Int = 16, sectionsH:Int = 15, yUp:Bool = true)
+	public function new(radius:Float = 50, height:Float = 100, sectionsC:Int = 16, sectionsH:Int = 15, yUp:Bool = true)
 	{
 		super();
 		
 		_radius = radius;
 		_height = height;
-		_sectionsW = sectionsW;
+		_sectionsC = sectionsC;
 		_sectionsH = (sectionsH%2 == 0)? sectionsH + 1 : sectionsH;
 		_yUp = yUp;
 	}
@@ -50,7 +53,7 @@ class CapsuleGeometry extends PrimitiveBase
 		var data:Vector<Float>;
 		var indices:Vector<UInt>;
 		var i:Int = 0, j:Int = 0, triIndex:Int = 0;
-		var numVerts:Int = (_sectionsH + 1)*(_sectionsW + 1);
+		var numVerts:Int = (_sectionsH + 1)*(_sectionsC + 1);
 		var stride:Int = target.vertexStride;
 		var skip:Int = stride - 9;
 		var index:Int = 0;
@@ -61,10 +64,10 @@ class CapsuleGeometry extends PrimitiveBase
 			data = target.vertexData;
 			indices = target.indexData;
 			if (indices == null)
-				indices = new Vector<UInt>((_sectionsH - 1)*_sectionsW*6, true);
+				indices = new Vector<UInt>((_sectionsH - 1)*_sectionsC*6, true);
 		} else {
 			data = new Vector<Float>(numVerts*stride, true);
-			indices = new Vector<UInt>((_sectionsH - 1)*_sectionsW*6, true);
+			indices = new Vector<UInt>((_sectionsH - 1)*_sectionsC*6, true);
 			invalidateUVs();
 		}
 		
@@ -75,8 +78,8 @@ class CapsuleGeometry extends PrimitiveBase
 			var ringradius:Float = _radius*Math.sin(horangle);
 			startIndex = index;
 			
-			for (i in 0..._sectionsW + 1) {
-				var verangle:Float = 2*Math.PI*i/_sectionsW;
+			for (i in 0..._sectionsC + 1) {
+				var verangle:Float = 2*Math.PI*i/_sectionsC;
 				var x:Float = ringradius*Math.cos(verangle);
 				var offset:Float = j > _sectionsH/2? _height/2 : -_height/2;
 				var y:Float = ringradius*Math.sin(verangle);
@@ -96,7 +99,7 @@ class CapsuleGeometry extends PrimitiveBase
 					comp2 = z;
 				}
 				
-				if (i == _sectionsW) {
+				if (i == _sectionsC) {
 					
 					data[index++] = data[startIndex];
 					data[index++] = data[startIndex + 1];
@@ -124,10 +127,10 @@ class CapsuleGeometry extends PrimitiveBase
 				}
 				
 				if (i > 0 && j > 0) {
-					var a:Int = (_sectionsW + 1)*j + i;
-					var b:Int = (_sectionsW + 1)*j + i - 1;
-					var c:Int = (_sectionsW + 1)*(j - 1) + i - 1;
-					var d:Int = (_sectionsW + 1)*(j - 1) + i;
+					var a:Int = (_sectionsC + 1)*j + i;
+					var b:Int = (_sectionsC + 1)*j + i - 1;
+					var c:Int = (_sectionsC + 1)*(j - 1) + i - 1;
+					var d:Int = (_sectionsC + 1)*(j - 1) + i;
 					
 					if (j == _sectionsH) {
 						data[index - 9] = data[startIndex];
@@ -170,7 +173,7 @@ class CapsuleGeometry extends PrimitiveBase
 		var index:Int;
 		var data:Vector<Float>;
 		var stride:Int = target.UVStride;
-		var UVlen:Int = (_sectionsH + 1)*(_sectionsW + 1)*stride;
+		var UVlen:Int = (_sectionsH + 1)*(_sectionsC + 1)*stride;
 		var skip:Int = stride - 2;
 		
 		if (target.UVData != null && UVlen == target.UVData.length)
@@ -182,8 +185,8 @@ class CapsuleGeometry extends PrimitiveBase
 		
 		index = target.UVOffset;
 		for (j in 0..._sectionsH + 1) {
-			for (i in 0..._sectionsW + 1) {
-				data[index++] = ( i/_sectionsW )*target.scaleU;
+			for (i in 0..._sectionsC + 1) {
+				data[index++] = ( i/_sectionsC )*target.scaleU;
 				data[index++] = ( j/_sectionsH )*target.scaleV;
 				index += skip;
 			}
@@ -225,14 +228,14 @@ class CapsuleGeometry extends PrimitiveBase
 	/**
 	 * Defines the number of horizontal sections that make up the capsule. Defaults to 16.
 	 */
-	private function get_sectionsW():Int
+	private function get_sectionsC():Int
 	{
-		return _sectionsW;
+		return _sectionsC;
 	}
 	
-	private function set_sectionsW(value:Int):Int
+	private function set_sectionsC(value:Int):Int
 	{
-		_sectionsW = value;
+		_sectionsC = value;
 		invalidateGeometry();
 		invalidateUVs();
 		return value;
@@ -240,12 +243,12 @@ class CapsuleGeometry extends PrimitiveBase
 	
 	private function get_segmentsW():Int
 	{
-		return sectionsW;
+		return sectionsC;
 	}
 	
 	private function set_segmentsW(value:Int):Int
 	{
-		return sectionsW = value;
+		return sectionsC = value;
 	}
 	
 	/**
