@@ -32,12 +32,12 @@ class RegularPolygonGeometry extends CylinderGeometry
 	
 	private function get_sides():Int
 	{
-		return _sectionsW;
+		return _sectionsC;
 	}
 	
 	private function set_sides(value:Int):Int
 	{
-		sectionsW = value;
+		sectionsC = value;
 		return value;
 	}
 	
